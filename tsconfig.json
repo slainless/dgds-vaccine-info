@@ -12,6 +12,9 @@
       // Add this line to get types for streaming imports (packageOptions.source="remote"):
       //     "*": [".snowpack/types/*"]
       // More info: https://www.snowpack.dev/guides/streaming-imports
+      "Components/*": ["./src/components/*"],
+      "Functions/*": ["./src/functions/*"],
+      "#/*": ["./src/*"],
     },
     /* noEmit - Snowpack builds (emits) files, not tsc. */
     "noEmit": true,

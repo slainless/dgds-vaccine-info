@@ -4,6 +4,11 @@ export default {
     public: { url: '/', static: true },
     src: { url: '/dist' },
   },
+  alias: {
+    Components: './src/components',
+    Functions: './src/functions',
+    '#': './src/',
+  },
   plugins: [
     '@snowpack/plugin-react-refresh',
     '@snowpack/plugin-dotenv',
