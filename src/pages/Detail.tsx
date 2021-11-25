@@ -177,7 +177,7 @@ export default function InformationPage() {
       maxW="container.sm"
       justifyContent="center"
       alignItems="center"
-      minH="100vh"
+      minH="100%"
       display="flex"
       flexDirection="column"
       px={4}

@@ -61,16 +61,15 @@ export default function MainPage() {
   return (
     <Container
       maxW="container.sm"
-      justifyContent="center"
-      alignItems="center"
-      minH="100vh"
+      alignItems="stretch"
+      minH="100%"
       display="flex"
-      flexDirection="column"
+      flexDirection="row"
       px={0}
     >
       <VStack
         hidden={isLoadingRegions}
-        minH="100vh"
+        minH="100%"
         width="100%"
         alignItems="stretch"
         spacing={0}
