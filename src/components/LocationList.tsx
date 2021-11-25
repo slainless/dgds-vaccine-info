@@ -16,7 +16,7 @@ import React, { useEffect, useState } from 'react'
 import type { Cities, Locations } from 'types/api'
 import LocationItem from './_LocationItem'
 import hash from 'object-hash'
-import { LocationCache } from '#/cache'
+import { LocationCache, SessionCache } from '#/cache'
 import { RiErrorWarningLine, RiEmotionUnhappyLine } from 'react-icons/ri'
 
 /*
@@ -38,7 +38,11 @@ export default function LocationList(
 
   useEffect(() => {
     if (selectedCity == null) return
-    start()
+    start().then((_) => {
+      // console.log(SessionCache.scrollY)
+      // alert(`seles mi loading: ${SessionCache.scrollY}`)
+      window.scrollTo({ top: SessionCache.scrollY })
+    })
     // // !mock
     // setLocations(
     //   Array(20).fill({

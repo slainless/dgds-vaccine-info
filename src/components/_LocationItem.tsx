@@ -28,6 +28,7 @@ import {
 import type { IconType } from 'react-icons'
 import hash from 'object-hash'
 import regMethodNormalizer from 'Functions/regMethodNormalizer'
+import { SessionCache } from '#/cache'
 
 export default function LocationItem(
   props: Parameters<typeof LinkBox>[0] & {
@@ -35,7 +36,7 @@ export default function LocationItem(
     onOpenDetail?: (location: Locations) => void
   },
 ) {
-  const { location, onOpenDetail: onOpenModal, ...rest } = props
+  const { location, onOpenDetail, ...rest } = props
   const { display, icon, color } = regMethodNormalizer(location.registration)
   return (
     <LinkBox
@@ -56,7 +57,10 @@ export default function LocationItem(
             color="green.600"
             fontWeight="semibold"
             fontSize="sm"
-            onClick={() => onOpenModal?.(location)}
+            onClick={() => {
+              onOpenDetail?.(location)
+              SessionCache.scrollY = window.scrollY
+            }}
           >
             {location.title}
           </LinkOverlay>
