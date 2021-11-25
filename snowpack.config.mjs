@@ -5,7 +5,7 @@ export default {
     src: { url: '/dist' },
   },
   env: {
-    API_URL: '/'
+    SNOWPACK_PUBLIC_API_URL: '/'
   },
   alias: {
     Components: './src/components',
