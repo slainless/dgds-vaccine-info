@@ -5,8 +5,8 @@
     "test": "web-test-runner \"src/**/*.test.tsx\"",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
-    "predeploy": "snowpack build",
-    "deploy": "gh-pages -d build"
+    "predeploy": "set \"SNOWPACK_PUBLIC_API_URL=/dgds-vaccine-info\" && snowpack build --baseUrl \"/dgds-vaccine-info\" && type nul > build/.nojekyll",
+    "deploy": "gh-pages -d build -t true"
   },
   "homepage": "https://slainless.github.io/dgds-vaccine-info",
   "dependencies": {

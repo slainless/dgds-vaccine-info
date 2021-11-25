@@ -4,6 +4,9 @@ export default {
     public: { url: '/', static: true },
     src: { url: '/dist' },
   },
+  env: {
+    API_URL: '/'
+  },
   alias: {
     Components: './src/components',
     Functions: './src/functions',

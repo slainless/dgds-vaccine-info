@@ -15,7 +15,11 @@ export default function MainPage() {
   }
   if (queryParamCity.city && queryParamCity.province) {
     SessionCache.lastSelectedCity = queryParamCity as Cities
-    window.history.replaceState({}, document.title, '/')
+    window.history.replaceState(
+      {},
+      document.title,
+      import.meta.env.SNOWPACK_PUBLIC_API_URL,
+    )
   }
 
   const { regions, start: fetchRegions, _setRegions } = useRegions()

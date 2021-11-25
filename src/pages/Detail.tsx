@@ -147,7 +147,7 @@ export default function InformationPage() {
   const location = LocationCache[locationHash!]
 
   if (location == null) {
-    window.location.replace('/')
+    window.location.href = import.meta.env.SNOWPACK_PUBLIC_API_URL
     return <></>
   }
   // // !mock
