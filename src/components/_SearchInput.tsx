@@ -49,7 +49,7 @@ const SearchInput = forwardRef<HTMLInputElement, Props>((props, ref) => {
         <Icon as={FaSearch} color="green.500" />
       </InputLeftElement>
       <Input
-        placeholder="Masukkan nama kota/kab."
+        placeholder="Cari kota/kabupaten disini..."
         ref={ref}
         onInput={(e) => {
           const input = e.target as HTMLInputElement
