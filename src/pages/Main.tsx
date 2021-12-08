@@ -6,21 +6,39 @@ import SearchCity from 'Components/SearchCity'
 import LocationList from 'Components/LocationList'
 import { SessionCache } from '#/cache'
 import { useSearchParams } from 'react-router-dom'
+import { Helmet } from 'react-helmet'
 
 export default function MainPage() {
-  const queryParams = new URL(window.location.href).searchParams
-  const queryParamCity = {
-    city: queryParams.get('city'),
-    province: queryParams.get('province'),
+  const [searchParams, setSearchParams] = useSearchParams()
+  const searchLastSelectedCity = searchParams.get('lsc')
+  const searchScrollY = searchParams.get('Y')
+  const searchCity = searchParams.get('city')
+  const searchProvince = searchParams.get('province')
+
+  if (searchCity && searchProvince) {
+    SessionCache.lastSelectedCity = {
+      city: searchCity,
+      province: searchProvince,
+    }
   }
-  if (queryParamCity.city && queryParamCity.province) {
-    SessionCache.lastSelectedCity = queryParamCity as Cities
+
+  if (searchLastSelectedCity) {
+    SessionCache.lastSelectedCity = JSON.parse(
+      atob(decodeURIComponent(searchLastSelectedCity)),
+    )
+  }
+
+  if (searchScrollY) {
+    SessionCache.scrollY = Number.parseFloat(searchScrollY)
+  }
+
+  useEffect(() => {
     window.history.replaceState(
       {},
       document.title,
-      import.meta.env.SNOWPACK_PUBLIC_API_URL ?? '/',
+      (import.meta.env.SNOWPACK_PUBLIC_API_URL ?? '/') + '#/',
     )
-  }
+  }, [])
 
   const { regions, start: fetchRegions, _setRegions } = useRegions()
   // // !mock
@@ -67,6 +85,13 @@ export default function MainPage() {
       flexDirection="row"
       px={0}
     >
+      <Helmet>
+        <title>
+          {selectedCity
+            ? `Lokasi Vaksin di ${selectedCity.city}`
+            : `Pilih Kota/Kabupaten`}
+        </title>
+      </Helmet>
       <VStack
         hidden={isLoadingRegions}
         minH="100%"
