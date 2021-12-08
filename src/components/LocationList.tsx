@@ -110,10 +110,11 @@ export default function LocationList(
           hidden={locations.length > 0 || selectedCity == null || loading}
           width="full"
           px={10}
+          opacity={0.7}
         >
           <Icon as={RiEmotionUnhappyLine} boxSize={16} color="red.400" />
           <Text textAlign="center" color="red.400">
-            Lokasi Vaksin di {selectedCity?.city} tidak ditemukan.
+            Lokasi Vaksin di {selectedCity?.city} tidak ditemukan...
           </Text>
         </VStack>
       </Portal>

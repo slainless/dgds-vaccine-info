@@ -207,14 +207,14 @@ export default function InformationPage() {
       <Heading as="h1" size="sm" my={4} color="green.500">
         {location.title}
       </Heading>
-      <Box border="1px solid" borderColor="gray.300" borderRadius="md">
+      <Box border="1px solid" borderColor="gray.100" borderRadius="md">
         <Table fontSize="sm">
           <Tbody>
             {TablesBody.map((v, i) => (
               <Tr
                 key={i}
                 borderBottom="1px solid"
-                borderColor="gray.300"
+                borderColor="gray.100"
                 sx={{
                   '&:last-of-type': {
                     borderBottom: 'none',

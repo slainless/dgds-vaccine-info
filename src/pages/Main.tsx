@@ -1,12 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useRegions } from 'Functions/useRegions'
-import { Spinner, Container, VStack, Portal, Box, Text } from '@chakra-ui/react'
+import {
+  Spinner,
+  Container,
+  VStack,
+  Portal,
+  Box,
+  Text,
+  Icon,
+  Image,
+} from '@chakra-ui/react'
 import type { Cities, Regions } from 'types/api'
 import SearchCity from 'Components/SearchCity'
 import LocationList from 'Components/LocationList'
 import { SessionCache } from '#/cache'
 import { useSearchParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet'
+import { RiEmotionUnhappyLine } from 'react-icons/ri'
 
 export default function MainPage() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -33,11 +43,7 @@ export default function MainPage() {
   }
 
   useEffect(() => {
-    window.history.replaceState(
-      {},
-      document.title,
-      (import.meta.env.SNOWPACK_PUBLIC_API_URL ?? '/') + '#/',
-    )
+    window.history.replaceState({}, document.title, PUBLIC_URL('#/'))
   }, [])
 
   const { regions, start: fetchRegions, _setRegions } = useRegions()
@@ -89,7 +95,7 @@ export default function MainPage() {
         <title>
           {selectedCity
             ? `Lokasi Vaksin di ${selectedCity.city}`
-            : `Pilih Kota/Kabupaten`}
+            : `Lokasi Vaksinasi by DIGIDES`}
         </title>
       </Helmet>
       <VStack
@@ -108,7 +114,7 @@ export default function MainPage() {
             setSelectedCity(city)
             SessionCache.lastSelectedCity = city
           }}
-          className={selectedCity ? '' : 'middle'}
+          // className={selectedCity ? '' : 'middle'}
           position="sticky"
           py={3}
           bgColor="rgba(255,255,255,0.4)"
@@ -147,6 +153,23 @@ export default function MainPage() {
             color="green.500"
           ></Spinner>
         </Box>
+        <VStack
+          position="absolute"
+          top="50%"
+          left="50%"
+          transform="translate(-50%, -50%)"
+          hidden={selectedCity != null || isLoadingRegions}
+          width="full"
+          opacity={0.5}
+          px={10}
+        >
+          <Box boxSize={32} mb={5}>
+            <Image src={PUBLIC_URL('assets/vaccine_mono.svg')} />
+          </Box>
+          <Text textAlign="center" color="green.600" fontWeight="semibold">
+            Temukan lokasi vaksin terdekat di kota/kabupaten mu!
+          </Text>
+        </VStack>
       </Portal>
     </Container>
   )
