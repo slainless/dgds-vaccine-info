@@ -18,7 +18,7 @@ export default function MainPage() {
     window.history.replaceState(
       {},
       document.title,
-      import.meta.env.SNOWPACK_PUBLIC_API_URL,
+      import.meta.env.SNOWPACK_PUBLIC_API_URL ?? '/',
     )
   }
 

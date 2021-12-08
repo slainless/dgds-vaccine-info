@@ -4,9 +4,6 @@ export default {
     public: { url: '/', static: true },
     src: { url: '/dist' },
   },
-  env: {
-    SNOWPACK_PUBLIC_API_URL: '/'
-  },
   alias: {
     Components: './src/components',
     Functions: './src/functions',
