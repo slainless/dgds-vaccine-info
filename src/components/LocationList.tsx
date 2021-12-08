@@ -72,16 +72,20 @@ export default function LocationList(
   return (
     <Box {...rest}>
       <VStack hidden={loading} alignItems="stretch">
-        {locations.map((location, index) => (
-          <LocationItem
-            location={location}
-            key={index}
-            onOpenDetail={(location) => {
-              const locationHash = hash(location)
-              LocationCache[locationHash] = location
-            }}
-          />
-        ))}
+        {locations.map((location, index) => {
+          const locationHash = hash(location)
+          return (
+            <LocationItem
+              location={location}
+              key={index}
+              to={`detail/${locationHash}`}
+              onClick={() => {
+                LocationCache[locationHash] = location
+                SessionCache.scrollY = window.scrollY
+              }}
+            />
+          )
+        })}
       </VStack>
       <Portal>
         <Box

@@ -31,12 +31,12 @@ import regMethodNormalizer from 'Functions/regMethodNormalizer'
 import { SessionCache } from '#/cache'
 
 export default function LocationItem(
-  props: Parameters<typeof LinkBox>[0] & {
-    location: Locations
-    onOpenDetail?: (location: Locations) => void
-  },
+  props: Parameters<typeof LinkBox>[0] &
+    Parameters<typeof RouterLink>[0] & {
+      location: Locations
+    },
 ) {
-  const { location, onOpenDetail, ...rest } = props
+  const { location, onClick, to, ...rest } = props
   const { display, icon, color } = regMethodNormalizer(location.registration)
   return (
     <LinkBox
@@ -52,15 +52,12 @@ export default function LocationItem(
         <VStack alignItems="flex-start" textAlign="left">
           <LinkOverlay
             as={RouterLink}
-            to={`detail/${hash(location)}`}
+            to={to}
             href="#"
             color="green.600"
             fontWeight="semibold"
             fontSize="sm"
-            onClick={() => {
-              onOpenDetail?.(location)
-              SessionCache.scrollY = window.scrollY
-            }}
+            onClick={onClick}
           >
             {location.title}
           </LinkOverlay>
