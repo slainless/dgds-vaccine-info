@@ -37,7 +37,9 @@ const config = {
   },
   buildOptions: {
     /* ... */
-    jsxInject: `const PUBLIC_URL = path => (import.meta.env.SNOWPACK_PUBLIC_API_URL ?? '/') + path`
+    jsxInject: '' +
+      `const PUBLIC_URL = path => (import.meta.env.SNOWPACK_PUBLIC_API_URL ?? '/') + path\n` +
+      `import React, { Fragment } from 'react'`
   },
 };
 

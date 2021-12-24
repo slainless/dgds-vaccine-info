@@ -7,7 +7,7 @@ import {
   InputLeftElement,
 } from '@chakra-ui/react'
 import type Fuse from 'fuse.js'
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { RiSearchLine } from 'react-icons/ri'
 import type { Cities, Regions } from 'types/api'
 import SearchInput from './_SearchInput'

@@ -13,7 +13,7 @@ import {
   Icon,
   Badge,
 } from '@chakra-ui/react'
-import React, { ReactElement, useEffect } from 'react'
+import { ReactElement, useEffect } from 'react'
 import { useParams } from 'react-router'
 import type { Locations } from 'types/api'
 import {

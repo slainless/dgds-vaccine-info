@@ -56,12 +56,18 @@ declare module '*.png' {
   export default ref
 }
 
-/* CUSTOM: ADD YOUR OWN HERE */
+/** Defined in `buildOptions.jsxInject` in `snowpack.config.mjs` */
+declare const React: typeof import('React')
+/** Defined in `buildOptions.jsxInject` in `snowpack.config.mjs` */
+declare const Fragment: typeof import('React').Fragment
+/**
+ * Defined in `buildOptions.jsxInject` in `snowpack.config.mjs`.
+ * Will append `SNOWPACK_PUBLIC_API_URL` env to given path.
+ */
+const PUBLIC_URL: (path: string) => string
 
 namespace React {
   function forwardRef<T, P = {}>(
     render: (props: P, ref: React.Ref<T>) => React.ReactElement | null,
   ): (props: P & React.RefAttributes<T>) => React.ReactElement | null
 }
-
-const PUBLIC_URL: (path: string) => string

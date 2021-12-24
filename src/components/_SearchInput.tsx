@@ -1,6 +1,6 @@
 import { Icon, Input, InputGroup, InputLeftElement } from '@chakra-ui/react'
 import Fuse from 'fuse.js'
-import React, { forwardRef, useEffect, useState } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 import { RiSearchLine } from 'react-icons/ri'
 import { FaSearch } from 'react-icons/fa'
 import type { Cities, Regions } from 'types/api'

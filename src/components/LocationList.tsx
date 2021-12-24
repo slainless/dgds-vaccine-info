@@ -12,7 +12,7 @@ import {
   Icon,
 } from '@chakra-ui/react'
 import { useLocations } from 'Functions/useLocations'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Cities, Locations } from 'types/api'
 import LocationItem from './_LocationItem'
 import hash from 'object-hash'
