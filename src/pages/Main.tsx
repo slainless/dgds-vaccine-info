@@ -83,14 +83,7 @@ export default function MainPage() {
   }, [regions])
 
   return (
-    <Container
-      maxW="container.sm"
-      alignItems="stretch"
-      minH="100%"
-      display="flex"
-      flexDirection="row"
-      px={0}
-    >
+    <Fragment>
       <Helmet>
         <title>
           {selectedCity
@@ -106,7 +99,6 @@ export default function MainPage() {
         spacing={0}
         position="relative"
         // gridGap={3}
-        px={2}
       >
         <SearchCity
           regions={regions}
@@ -166,11 +158,16 @@ export default function MainPage() {
           <Box boxSize={32} mb={5}>
             <Image src={PUBLIC_URL('assets/vaccine_mono.svg')} />
           </Box>
-          <Text textAlign="center" color="green.600" fontWeight="semibold">
+          <Text
+            textAlign="center"
+            color="green.600"
+            fontWeight="semibold"
+            maxW="sm"
+          >
             Temukan lokasi vaksin terdekat di kota/kabupaten mu!
           </Text>
         </VStack>
       </Portal>
-    </Container>
+    </Fragment>
   )
 }

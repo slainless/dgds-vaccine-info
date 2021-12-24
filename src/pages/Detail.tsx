@@ -191,16 +191,7 @@ export default function InformationPage() {
   //   dateadded: '2021-08-22',
   // }
   return (
-    <Container
-      maxW="container.sm"
-      justifyContent="center"
-      alignItems="center"
-      minH="100%"
-      display="flex"
-      flexDirection="column"
-      px={4}
-      pb={3}
-    >
+    <Fragment>
       <Helmet>
         <title>{`${location.title} di ${SessionCache.lastSelectedCity?.city}`}</title>
       </Helmet>
@@ -250,6 +241,6 @@ export default function InformationPage() {
           </Tbody>
         </Table>
       </Box>
-    </Container>
+    </Fragment>
   )
 }

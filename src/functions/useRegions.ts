@@ -2,12 +2,10 @@ import { useEffect, useState } from 'react'
 import type { Regions } from 'types/api'
 import isValidResponse from './isValidResponse'
 import isValidRegions from './isValidRegions'
+import defaultParams from './defaultParams'
 
-export function useRegions(options?: { instantStart: boolean }) {
-  type O = typeof options
-  const { instantStart } = Object.assign<{}, O, Partial<O>>({}, options, {
-    instantStart: false,
-  })
+export function useRegions(options?: { instantStart?: boolean }) {
+  const { instantStart } = defaultParams(options, { instantStart: false })
 
   const [loading, setLoading] = useState(instantStart)
   const [regions, setRegions] = useState<Regions[]>([])
