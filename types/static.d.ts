@@ -56,6 +56,12 @@ declare module '*.png' {
   export default ref
 }
 
+module React {
+  function forwardRef<T, P = {}>(
+    render: (props: P, ref: React.Ref<T>) => React.ReactElement | null,
+  ): (props: P & React.RefAttributes<T>) => React.ReactElement | null
+}
+
 /** Defined in `buildOptions.jsxInject` in `snowpack.config.mjs` */
 declare const React: typeof import('React')
 /** Defined in `buildOptions.jsxInject` in `snowpack.config.mjs` */
@@ -66,8 +72,7 @@ declare const Fragment: typeof import('React').Fragment
  */
 const PUBLIC_URL: (path: string) => string
 
-namespace React {
-  function forwardRef<T, P = {}>(
-    render: (props: P, ref: React.Ref<T>) => React.ReactElement | null,
-  ): (props: P & React.RefAttributes<T>) => React.ReactElement | null
-}
+declare type ReactState<T> = [
+  state: T,
+  dispatch: React.Dispatch<React.SetStateAction<T>>,
+]
