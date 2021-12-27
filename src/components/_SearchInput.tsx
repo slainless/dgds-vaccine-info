@@ -3,21 +3,21 @@ import Fuse from 'fuse.js'
 import { forwardRef, useEffect, useState } from 'react'
 import { RiSearchLine } from 'react-icons/ri'
 import { FaSearch } from 'react-icons/fa'
-import type { Cities, Regions } from 'types/api'
+import type { City, Region } from 'types/api'
 import { SessionCache } from '#/cache'
 
 type Props = {
-  regions: Regions[]
-  onSearchResults: (results: Fuse.FuseResult<Cities>[]) => void
+  regions: Region[]
+  onSearchResults: (results: Fuse.FuseResult<City>[]) => void
 }
 const SearchInput = forwardRef<HTMLInputElement, Props>((props, ref) => {
   const { regions, onSearchResults } = props
-  const [fuse, setFuse] = useState<Fuse<Cities>>(new Fuse([]))
+  const [fuse, setFuse] = useState<Fuse<City>>(new Fuse([]))
 
   useEffect(() => {
     if (regions.length === 0) return
 
-    const cities: Cities[] = regions
+    const cities: City[] = regions
       .map((region) =>
         region.city.map((city) => ({
           city,
@@ -33,7 +33,7 @@ const SearchInput = forwardRef<HTMLInputElement, Props>((props, ref) => {
     )
   }, [regions])
 
-  const [results, setResult] = useState<Fuse.FuseResult<Cities>[]>([])
+  const [results, setResult] = useState<Fuse.FuseResult<City>[]>([])
 
   function inputHandler(val: string) {
     setResult(fuse.search(val))

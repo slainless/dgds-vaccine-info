@@ -10,7 +10,7 @@ import {
   Icon,
   Image,
 } from '@chakra-ui/react'
-import type { Cities, Regions } from 'types/api'
+import type { City, Region } from 'types/api'
 import SearchCity from 'Components/SearchCity'
 import LocationList from 'Components/LocationList'
 import { SessionCache } from '#/cache'
@@ -57,7 +57,7 @@ export default function MainPage() {
   // const [selectedCity, setSelectedCity] = useState<Cities>(
   //   JSON.parse(sessionStorage.getItem(SELECTED_CITY_KEY) ?? 'null'),
   // )
-  const [selectedCity, setSelectedCity] = useState<Cities | undefined>(
+  const [selectedCity, setSelectedCity] = useState<City | undefined>(
     SessionCache.lastSelectedCity,
   )
 

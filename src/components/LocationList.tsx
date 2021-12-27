@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react'
 import { useLocations } from 'Functions/useLocations'
 import { useEffect, useState } from 'react'
-import type { Cities, Locations } from 'types/api'
+import type { City, Locations } from 'types/api'
 import LocationItem from './_LocationItem'
 import hash from 'object-hash'
 import { LocationCache, SessionCache } from '#/cache'
@@ -26,7 +26,7 @@ import { RiErrorWarningLine, RiEmotionUnhappyLine } from 'react-icons/ri'
 */
 export default function LocationList(
   props: Parameters<typeof Box>[0] & {
-    selectedCity: Cities | undefined
+    selectedCity: City | undefined
   },
 ) {
   const { selectedCity, ...rest } = props

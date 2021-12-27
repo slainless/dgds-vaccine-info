@@ -1,16 +1,16 @@
 import type Regions from './regions'
-export type Province = typeof Regions[number]['province'] | (string & {})
-export type City = typeof Regions[number]['city'][number] | (string & {})
-export type Cities = {
-  city: City
-  province: Province
+export type ProvinceValue = typeof Regions[number]['province'] | (string & {})
+export type CityValue = typeof Regions[number]['city'][number] | (string & {})
+export type City = {
+  city: CityValue
+  province: ProvinceValue
 }
-export type Regions = Omit<Cities, 'city'> & {
-  city: City[]
+export type Region = Omit<City, 'city'> & {
+  city: CityValue[]
 }
 export type Locations = {
-  province: Province
-  city: City
+  province: ProvinceValue
+  city: CityValue
 
   title: string
   description: string
@@ -58,6 +58,9 @@ interface HTTPValidationError {
   detail: string | ValidationError
 }
 
-export type RegionsResponse = EmptyResponse | FilledResponse<Regions> 
+export type RegionsResponse = EmptyResponse | FilledResponse<Region>
 
-export type LocationsResponse = EmptyResponse | ValidationError | FilledResponse<Locations>
+export type LocationsResponse =
+  | EmptyResponse
+  | ValidationError
+  | FilledResponse<Locations>

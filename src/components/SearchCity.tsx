@@ -9,7 +9,7 @@ import {
 import type Fuse from 'fuse.js'
 import { useEffect, useRef, useState } from 'react'
 import { RiSearchLine } from 'react-icons/ri'
-import type { Cities, Regions } from 'types/api'
+import type { City, Region } from 'types/api'
 import SearchInput from './_SearchInput'
 import SearchResultList from './_SearchResultList'
 import { SessionCache } from '#/cache'
@@ -27,12 +27,12 @@ import { SessionCache } from '#/cache'
 */
 export default function SearchCity(
   props: Parameters<typeof Box>[0] & {
-    regions: Regions[]
-    onSelectedCity: (city: Cities) => void
+    regions: Region[]
+    onSelectedCity: (city: City) => void
   },
 ) {
   const { regions, onSelectedCity, ...rest } = props
-  const [results, setResults] = useState<Fuse.FuseResult<Cities>[]>([])
+  const [results, setResults] = useState<Fuse.FuseResult<City>[]>([])
   const SearchInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {

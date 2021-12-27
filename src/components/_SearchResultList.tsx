@@ -7,12 +7,12 @@ import {
   useState,
 } from 'react'
 import type Fuse from 'fuse.js'
-import type { Cities } from 'types/api'
+import type { City } from 'types/api'
 import { Box, Button, HStack, Link, Text } from '@chakra-ui/react'
 
 type Props = Parameters<typeof Box>[0] & {
-  fuseResult: Fuse.FuseResult<Cities>[]
-  onClickResult: (result: Fuse.FuseResult<Cities>) => void
+  fuseResult: Fuse.FuseResult<City>[]
+  onClickResult: (result: Fuse.FuseResult<City>) => void
   InputElement: React.RefObject<HTMLInputElement>
 }
 
