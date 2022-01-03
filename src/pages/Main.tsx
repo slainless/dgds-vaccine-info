@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { useRegions } from 'Functions/useRegions'
+import { useFetchRegions } from 'Functions/useFetchRegions'
 import {
   Spinner,
   Container,
@@ -46,7 +46,9 @@ export default function MainPage() {
     window.history.replaceState({}, document.title, PUBLIC_URL('#/'))
   }, [])
 
-  const { regions, start: fetchRegions, _setRegions } = useRegions()
+  // TODO: fix this
+  const { response, startFetch: fetchRegions /** _setRegions */ } =
+    useFetchRegions()
   // // !mock
   // const [regions, setRegions] = useState<Regions[]>([])
 
@@ -67,8 +69,10 @@ export default function MainPage() {
     // )
     const cachedRegions = SessionCache.regions
 
-    if (cachedRegions.length !== 0) _setRegions(cachedRegions)
-    else fetchRegions()
+    // TODO: fix this
+    // if (cachedRegions.length !== 0) _setRegions(cachedRegions)
+    // else fetchRegions()
+    fetchRegions()
     // // !mock
     // setRegions([
     //   { province: 'Sulawesi Selatan', city: ['Kota Makasar', 'Kota Medan'] },
@@ -76,11 +80,11 @@ export default function MainPage() {
   }, [])
 
   useEffect(() => {
-    if (regions.length === 0) return
+    if (response.length === 0) return
     setLoadingRegions(false)
-    SessionCache.regions = regions
+    SessionCache.regions = response
     // sessionStorage.setItem(REGION_LIST_KEY, JSON.stringify(regions))
-  }, [regions])
+  }, [response])
 
   return (
     <Fragment>
@@ -101,7 +105,7 @@ export default function MainPage() {
         // gridGap={3}
       >
         <SearchCity
-          regions={regions}
+          regions={response}
           onSelectedCity={(city) => {
             setSelectedCity(city)
             SessionCache.lastSelectedCity = city

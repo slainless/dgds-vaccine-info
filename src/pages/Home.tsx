@@ -1,5 +1,5 @@
-import HomeFooter from 'Components/Home/Footer'
-import HomeHero from 'Components/Home/Hero'
+import HomeFooter from 'Components/pages/Home/Footer'
+import HomeHero from 'Components/pages/Home/Hero'
 
 export default function HomePage() {
   return (

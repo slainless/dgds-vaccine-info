@@ -1,14 +1,12 @@
-import { useEffect, useMemo, useState } from 'react'
-import type { Region } from 'types/api'
+import { useMemo } from 'react'
 import isValidResponse from './isValidResponse'
 import isValidRegions from './isValidRegions'
-import defaultParams from './defaultParams'
-import { useFetchJSON } from 'Functions/useFetchJSON'
+import useFetchJSON from 'Functions/useFetchJSON'
 
-export function useFetchRegions(options?: Parameters<typeof useFetchJSON>[1]) {
+export function useFetchRegions() {
   const { response, ...rest } = useFetchJSON(
     'https://api.vaksinasi.id/regions',
-    options,
+    { name: 'region' },
   )
   const regions = useMemo(() => {
     if (response == null) return null

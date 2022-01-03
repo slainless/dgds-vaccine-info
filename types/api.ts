@@ -64,3 +64,5 @@ export type LocationsResponse =
   | EmptyResponse
   | ValidationError
   | FilledResponse<Locations>
+
+export type FetchCode = 'region' | 'location'

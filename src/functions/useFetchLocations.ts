@@ -1,17 +1,14 @@
 import { useMemo, useState } from 'react'
-import type { City, CityValue, Locations, ProvinceValue } from 'types/api'
+import type { City } from 'types/api'
 import isValidResponse from './isValidResponse'
 import isValidLocations from './isValidLocations'
-import { useFetchJSON } from './useFetchJSON'
+import useFetchJSON from './useFetchJSON'
 
-export default function useFetchLocations(
-  input: City | undefined,
-  options?: Parameters<typeof useFetchJSON>[1],
-) {
+export default function useFetchLocations(input: City | null) {
   const { province, city } = input ?? {}
   const { response, ...rest } = useFetchJSON(
     `https://api.vaksinasi.id/locations/${province}?city=${city}`,
-    options,
+    { name: 'location' },
   )
   const locations = useMemo(() => {
     if (response == null) return null

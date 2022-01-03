@@ -1,9 +1,12 @@
 import { useState } from 'react'
-import type { Cities, City, Locations, Province } from 'types/api'
+import type { City, CityValue, Locations, ProvinceValue } from 'types/api'
 import isValidResponse from './isValidResponse'
 import isValidLocations from './isValidLocations'
 
-export function useLocations(input?: { province: Province; city: City }) {
+export function useLocations(input?: {
+  province: ProvinceValue
+  city: CityValue
+}) {
   const [loading, setLoading] = useState(false)
   const [locations, setLocations] = useState<Locations[]>([])
 

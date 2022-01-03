@@ -1,24 +1,18 @@
+import { useLoadingContext } from 'Components/LoadingContext'
 import { useState, Dispatch, SetStateAction } from 'react'
+import type { FetchCode } from 'types/api'
 import defaultParams from './defaultParams'
 
-type ReactState<T> = [T, Dispatch<SetStateAction<T>>]
-
 type Options = {
-  progressState?: ReactState<number>
-  loadingState?: ReactState<boolean>
+  name: FetchCode
 }
-export function useFetchJSON<T>(input: RequestInfo, options?: Options) {
-  const { progressState, loadingState } = defaultParams(options, {
-    progressState: useState(0),
-    loadingState: useState(false),
-  })
+export default function useFetchJSON<T>(input: RequestInfo, options: Options) {
+  const { name } = options
   const [res, setRes] = useState<T>()
-  const [progress, setProgress] = progressState
-  const [loading, setLoading] = loadingState
+  const { setProgress, getProgress } = useLoadingContext()
 
   async function start() {
-    setLoading(true)
-    setProgress(0)
+    setProgress(name, 0)
     const response = await fetch(input)
     const reader = response.body!.getReader()
 
@@ -32,7 +26,7 @@ export function useFetchJSON<T>(input: RequestInfo, options?: Options) {
 
       chunks.push(value!)
       receivedLength += value!.length
-      setProgress(receivedLength / contentLength)
+      setProgress(name, receivedLength / contentLength)
     }
 
     const int8Data = new Uint8Array(receivedLength)
@@ -44,16 +38,11 @@ export function useFetchJSON<T>(input: RequestInfo, options?: Options) {
 
     const textData = new TextDecoder('utf-8').decode(int8Data)
     setRes(JSON.parse(textData))
-    setLoading(false)
   }
 
   return {
     response: res,
     setResponse: setRes,
     startFetch: start,
-    progress,
-    setProgress,
-    loading,
-    setLoading,
   }
 }

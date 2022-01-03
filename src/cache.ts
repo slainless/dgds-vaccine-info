@@ -1,9 +1,9 @@
-import type { Cities, Locations, Regions } from 'types/api'
+import type { City, Locations, Region } from 'types/api'
 
 const LocationCache: Record<string, Locations> = {}
 const SessionCache: {
-  regions: Regions[]
-  lastSelectedCity: Cities | undefined
+  regions: Region[]
+  lastSelectedCity: City | undefined
   scrollY: number
 } = {
   regions: [],

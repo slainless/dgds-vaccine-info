@@ -1,6 +1,6 @@
-export default function defaultParams<T, K>(
+export default function defaultParams<T, K extends T>(
   params: T,
-  defaultParams: Partial<T> & K,
+  defaultParams: K,
 ): T & K & {} {
-  return Object.assign<{}, Partial<T> & K, T>({}, defaultParams, params)
+  return Object.assign<{}, K, T>({}, defaultParams, params)
 }
