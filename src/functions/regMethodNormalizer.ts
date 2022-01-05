@@ -7,7 +7,15 @@ import {
   RiMoreFill,
   RiAddCircleLine,
   RiArrowRightCircleLine,
+  RiHospitalLine,
+  RiBuildingFill,
 } from 'react-icons/ri'
+import {
+  MdOutlinePhonelink,
+  MdTapAndPlay,
+  MdLocalHospital,
+} from 'react-icons/md'
+import { HiOutlineStatusOnline } from 'react-icons/hi'
 
 enum RegistrationMethod {
   ONLINE = 'Online',
@@ -62,14 +70,14 @@ export default function regMethodNormalizer(
     return {
       display: detailed ? str : RegistrationMethod.OFFLINE,
       color: 'green',
-      icon: RiBuilding4Line,
+      icon: RiHospitalLine,
     }
 
   if (/online/gi.test(str))
     return {
       display: detailed ? str : RegistrationMethod.ONLINE,
       color: 'pink',
-      icon: RiHome5Line,
+      icon: MdOutlinePhonelink,
     }
 
   return otherMethodNormalizer(str, detailed)
