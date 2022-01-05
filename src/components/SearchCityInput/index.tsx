@@ -5,9 +5,11 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Spinner,
   VStack,
 } from '@chakra-ui/react'
 import { useDataContext } from 'Components/DataContext'
+import { useLoadingContext } from 'Components/LoadingContext'
 import useFuzzySearch from 'Functions/useFuzzySearch'
 import {
   ForwardedRef,
@@ -23,6 +25,9 @@ import CityDropdown from './Dropdown'
 import Fuse from 'fuse.js'
 import useHasFocusWithin from 'Functions/useHasFocusWithin'
 import mergeRefs from 'react-merge-refs'
+import { useLocation, useMatch } from 'react-router-dom'
+import * as s from 'superstruct'
+import { urlToValue } from 'Functions/regionValueNormalizer'
 
 type Props = Parameters<typeof VStack>[0] & {
   onFocusWithin?: (state: boolean) => void
@@ -30,6 +35,7 @@ type Props = Parameters<typeof VStack>[0] & {
 const SearchCityInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const { onFocusWithin, ...rest } = props
   const { regions } = useDataContext()
+  const { isLoading } = useLoadingContext()
   const cities: City[] | null = useMemo(() => {
     if (regions == null) return null
     return regions
@@ -48,6 +54,27 @@ const SearchCityInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const { hasFocus, setFocus } = useHasFocusWithin(containerRef)
+
+  const match = useMatch(':province/:city')
+  const location = useLocation()
+
+  useEffect(() => {
+    if (match == null || inputRef.current == null || cities == null) return
+
+    if (
+      s.is(
+        match.params,
+        s.object({
+          province: s.string(),
+          city: s.string(),
+        }),
+      )
+    ) {
+      inputRef.current.value = urlToValue(match.params).city
+      search(match.params.city)
+    }
+  }, [inputRef, cities, location])
+
   useEffect(() => {
     if (onFocusWithin) onFocusWithin(hasFocus)
   }, [hasFocus])
@@ -71,7 +98,7 @@ const SearchCityInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
             minW="initial"
             icon={<Icon as={RiCloseLine} boxSize={5} />}
             aria-label="search-location"
-            hidden={hasFocus === false}
+            hidden={hasFocus === false || isLoading}
             onClick={() => {
               if (inputRef.current == null) return
               inputRef.current.value = ''
@@ -92,10 +119,16 @@ const SearchCityInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
             minW="initial"
             icon={<Icon as={RiSearchLine} boxSize={5} />}
             aria-label="search-location"
-            hidden={hasFocus}
+            hidden={hasFocus || isLoading}
             disabled
             pointerEvents="none"
           ></IconButton>
+          <Spinner
+            boxSize={5}
+            thickness="3px"
+            color="gray.300"
+            hidden={isLoading === false}
+          />
         </InputRightElement>
         <Input
           placeholder="Masukkan kota/kabupaten-mu disini"
@@ -107,6 +140,7 @@ const SearchCityInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
           onInput={(e) => {
             search(inputRef.current!.value)
           }}
+          disabled={isLoading}
         />
       </InputGroup>
       <CityDropdown

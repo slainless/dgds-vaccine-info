@@ -1,27 +1,40 @@
 import { Heading, Link, VStack, Text } from '@chakra-ui/react'
+import { apiToValue, valueToUrl } from 'Functions/regionValueNormalizer'
 import { defaults } from 'lodash-es'
-import { Link as RouterLink } from 'react-router-dom'
+import { useMemo } from 'react'
+import { Link as RouterLink, useLocation, useMatch } from 'react-router-dom'
 import type { City } from 'types/api'
 
 function DropdownItem(
   props: Parameters<typeof Link>[0] & {
     city: City
+    // shouldGiveFocusOnPageChange: boolean
   },
 ) {
   const {
-    city: { city, province },
+    city,
+    // shouldGiveFocusOnPageChange,
     ...rest
   } = props
+
+  // to generate url, we need to convert api value to display value
+  // then from display value to url value
+  const displayValue = useMemo(() => apiToValue(city), [city])
+  const urlValue = useMemo(() => valueToUrl(displayValue), [displayValue])
   return (
     <Link
       as={RouterLink}
-      to={`/${province}/${city}`}
+      to={`/${urlValue.province}/${urlValue.city}`}
       sx={{
         '&:first-of-type :first-of-type': {
           borderTop: 'none',
         },
       }}
       tabIndex={0}
+      // state={{
+      //   value: city,
+      //   focus: false,
+      // }}
       {...rest}
     >
       <VStack
@@ -34,8 +47,8 @@ function DropdownItem(
         borderTopColor="gray.200"
         pl={4}
       >
-        <Heading size="sm">{city}</Heading>
-        <Text>{province}</Text>
+        <Heading size="sm">{displayValue.city}</Heading>
+        <Text>{displayValue.province}</Text>
       </VStack>
     </Link>
   )
@@ -50,6 +63,9 @@ export default function CityDropdown(
   const { data, onClickItem, ...rest } = defaults(props, {
     onClickItem: () => {},
   })
+  const { pathname } = useLocation()
+  // const isListPage = useMatch(':province/:city')
+  // console.log(isListPage)
   return (
     <VStack
       position="absolute"
@@ -72,6 +88,7 @@ export default function CityDropdown(
         <DropdownItem
           city={city}
           key={i}
+          // shouldGiveFocusOnPageChange={isListPage ? false : true}
           onClick={(e) => {
             console.log('fuc', onClickItem)
             onClickItem(city, e)
