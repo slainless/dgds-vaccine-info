@@ -28,6 +28,7 @@ import mergeRefs from 'react-merge-refs'
 import { useLocation, useMatch } from 'react-router-dom'
 import * as s from 'superstruct'
 import { urlToValue } from 'Functions/regionValueNormalizer'
+import { useCityParam } from 'Functions/useValidParams'
 
 type Props = Parameters<typeof VStack>[0] & {
   onFocusWithin?: (state: boolean) => void
@@ -55,25 +56,16 @@ const SearchCityInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const { hasFocus, setFocus } = useHasFocusWithin(containerRef)
 
-  const match = useMatch(':province/:city')
+  // const match = useMatch(':province/:city')
+  const param = useCityParam()
   const location = useLocation()
 
   useEffect(() => {
-    if (match == null || inputRef.current == null || cities == null) return
+    if (inputRef.current == null || param == null) return
 
-    if (
-      s.is(
-        match.params,
-        s.object({
-          province: s.string(),
-          city: s.string(),
-        }),
-      )
-    ) {
-      inputRef.current.value = urlToValue(match.params).city
-      search(match.params.city)
-    }
-  }, [inputRef, cities, location])
+    inputRef.current.value = param.city
+    search(param.city)
+  }, [param])
 
   useEffect(() => {
     if (onFocusWithin) onFocusWithin(hasFocus)
