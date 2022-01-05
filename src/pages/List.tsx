@@ -6,26 +6,39 @@ import { useParams } from 'react-router-dom'
 import { useDataContext } from 'Components/DataContext'
 import { useEffect, useMemo } from 'react'
 import { urlToValue, valueToApi } from 'Functions/regionValueNormalizer'
+import { useCityParam } from 'Functions/useValidParams'
+import hash from 'object-hash'
+import type { Locations } from 'types/api'
 
+const locationsCache: {
+  lastHash: string | null
+  locations: Locations[] | null
+} = {
+  lastHash: null,
+  locations: null,
+}
 export default function ListPage() {
-  const { province, city } = useParams()
-  const { isCityValid, regions } = useDataContext()
-  const cityParams = useMemo(() => {
-    if (regions == null) return null
-    if (province == null || city == null)
-      throw new Error('Province & City is empty!')
-    const params = valueToApi(urlToValue({ province, city }))
+  const { regions } = useDataContext()
+  const city = useCityParam()
 
-    if (isCityValid(params)) return params
-    // TODO: display wrong url feedback instead of returning null
-    console.log('URL parameters is invalid!', params)
-    return null
-  }, [province, city, regions])
+  const { locations: l, startFetch } = useFetchLocations(
+    city ? valueToApi(city) : null,
+  )
 
-  const { locations, startFetch } = useFetchLocations(cityParams)
   useEffect(() => {
-    if (cityParams != null) startFetch()
-  }, [cityParams])
+    const lastHash = locationsCache.lastHash
+    if (city == null) return
+    if (lastHash != null && hash(city) === lastHash) return
+    startFetch()
+  }, [city])
+
+  const locations = useMemo(() => {
+    if (l == null) return locationsCache.locations
+    locationsCache.lastHash = hash(city)
+    locationsCache.locations = l
+
+    return l
+  }, [l])
 
   return (
     <Fragment>

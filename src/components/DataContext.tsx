@@ -15,6 +15,7 @@ export const {
   regions: null,
 })
 
+const isCityValidCache = new Map<string, boolean>()
 export function useDataContext() {
   const { regions } = useContext(DataContext)
   const isCityValid = useCallback(
@@ -24,9 +25,15 @@ export function useDataContext() {
           'Attempting to access isCityValid function while regions is empty!',
         )
       const { city, province } = props
+      const hashed = hash(props)
+
+      let result: boolean
+      if ((result = isCityValidCache.get(hashed) !== undefined)) return result
+
       const region = regions.find((r) => r.province === province)
-      if (region != null && region.city.find((c) => c === city)) return true
-      return false
+      result = region != null && !!region.city.find((c) => c === city)
+      isCityValidCache.set(hashed, result)
+      return result
     },
     [regions],
   )
