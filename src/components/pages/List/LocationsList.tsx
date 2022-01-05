@@ -10,9 +10,11 @@ import {
   Icon,
   Badge,
   Flex,
+  LinkBox,
+  LinkOverlay,
 } from '@chakra-ui/react'
 import { useParams } from 'react-router-dom'
-import type { Locations } from 'types/api'
+import type { City, Locations } from 'types/api'
 import { RiBuildingLine, RiMapPin2Fill } from 'react-icons/ri'
 import { FcClock } from 'react-icons/fc'
 import {
@@ -21,12 +23,20 @@ import {
   MdEventAvailable,
 } from 'react-icons/md'
 import regMethodNormalizer from 'Functions/regMethodNormalizer'
+import { Link as RouterLink } from 'react-router-dom'
+import hash from 'object-hash'
+import { useDataContext } from 'Components/DataContext'
+import { urlToValue } from 'Functions/regionValueNormalizer'
+import { LocationDetailCache } from '#/cache'
+import { useCityParam } from 'Functions/useValidParams'
 
 function LocationItem(props: { location: Locations }) {
   const { location } = props
+
   const regMethod = regMethodNormalizer(location.registration)
   return (
-    <VStack
+    <LinkBox
+      as={VStack}
       boxShadow="sm"
       border="1px solid"
       borderColor="gray.100"
@@ -39,6 +49,10 @@ function LocationItem(props: { location: Locations }) {
       gridGap={4}
       // templateColumns="auto max-content"
       alignItems="stretch"
+      onClick={() => {
+        // addLocation({ ...urlToValue({ province, city }), location })
+        LocationDetailCache[hash(location)] = location
+      }}
     >
       <Flex gridGap={2}>
         <VStack
@@ -56,7 +70,9 @@ function LocationItem(props: { location: Locations }) {
             fontWeight="semibold"
             mb={2}
           >
-            {location.title}
+            <LinkOverlay as={RouterLink} to={hash(location)}>
+              {location.title}
+            </LinkOverlay>
           </Heading>
           {/* <Flex> */}
           <Text fontSize="0.825rem" color="gray.500">
@@ -66,8 +82,12 @@ function LocationItem(props: { location: Locations }) {
           {/* </Flex> */}
         </VStack>
         <VStack className="link" width="max-content" alignItems="stretch">
-          <Button size="xs">Tautan</Button>
-          <Button size="xs">Peta</Button>
+          <Button size="xs" as="a" href={location.link} target="_blank">
+            Tautan
+          </Button>
+          <Button size="xs" as="a" href={location.map} target="_blank">
+            Peta
+          </Button>
         </VStack>
       </Flex>
 
@@ -128,7 +148,7 @@ function LocationItem(props: { location: Locations }) {
           </Text>
         </Flex>
       </HStack>
-    </VStack>
+    </LinkBox>
   )
 }
 

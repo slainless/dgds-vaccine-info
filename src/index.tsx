@@ -6,6 +6,7 @@ import MainPage from './pages/Main'
 import DetailPage from './pages/Detail'
 import HomePage from './pages/Home'
 import ListPage from './pages/List'
+import LocationPage from './pages/Location'
 
 ReactDOM.render(
   <React.StrictMode>
@@ -13,8 +14,10 @@ ReactDOM.render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<HomePage />} />
-          <Route path=":province/:city" element={<ListPage />} />
-          <Route path="detail/:locationHash" element={<DetailPage />} />
+          <Route path=":province/:city">
+            <Route index element={<ListPage />} />
+            <Route path=":locationHash" element={<LocationPage />} />
+          </Route>
         </Route>
       </Routes>
     </HashRouter>
