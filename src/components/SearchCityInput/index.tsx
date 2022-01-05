@@ -78,6 +78,7 @@ const SearchCityInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
   useEffect(() => {
     if (onFocusWithin) onFocusWithin(hasFocus)
   }, [hasFocus])
+
   return (
     <VStack
       alignItems="flex-start"
@@ -122,7 +123,7 @@ const SearchCityInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
             hidden={hasFocus || isLoading}
             disabled
             pointerEvents="none"
-          ></IconButton>
+          />
           <Spinner
             boxSize={5}
             thickness="3px"
@@ -131,7 +132,11 @@ const SearchCityInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
           />
         </InputRightElement>
         <Input
-          placeholder="Masukkan kota/kabupaten-mu disini"
+          placeholder={
+            isLoading && regions == null
+              ? `Sedang mengunduh daftar kota...`
+              : `Masukkan kota/kabupaten-mu disini`
+          }
           bgColor="white"
           shadow="md"
           // pr={hasFocus ? 20 : 10}

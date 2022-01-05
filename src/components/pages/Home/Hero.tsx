@@ -8,12 +8,13 @@ import {
   ListItem,
   Box,
   Image,
+  Tooltip,
 } from '@chakra-ui/react'
 import SearchCityInput from 'Components/SearchCityInput'
 import useFlipMove from 'Functions/useFlipMove'
 import useHasFocusWithin from 'Functions/useHasFocusWithin'
 import { useEffect, useRef, useState } from 'react'
-import { RiCheckboxCircleFill } from 'react-icons/ri'
+import { RiCheckboxCircleFill, RiEditCircleFill } from 'react-icons/ri'
 
 export default function HomeHero() {
   const inputRef = useRef<HTMLDivElement>(null)
@@ -74,16 +75,20 @@ export default function HomeHero() {
         >
           <ListItem>
             <ListIcon as={RiCheckboxCircleFill} color="green.500" />
-            Informasi Umum
+            Lokasi Vaksin
           </ListItem>
-          <ListItem>
-            <ListIcon as={RiCheckboxCircleFill} color="green.500" />
-            Vaksin
-          </ListItem>
-          <ListItem>
-            <ListIcon as={RiCheckboxCircleFill} color="green.500" />
-            Status Covid-19
-          </ListItem>
+          <Tooltip label="Work in Progress" placement="top">
+            <ListItem color="red.500" opacity={0.5}>
+              <ListIcon as={RiEditCircleFill} />
+              Informasi
+            </ListItem>
+          </Tooltip>
+          <Tooltip label="Work in Progress" placement="top">
+            <ListItem color="red.500" opacity={0.5}>
+              <ListIcon as={RiEditCircleFill} />
+              Status & Statistik
+            </ListItem>
+          </Tooltip>
         </List>
       </Box>
     </Container>
