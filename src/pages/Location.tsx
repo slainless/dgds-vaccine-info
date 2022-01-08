@@ -8,11 +8,15 @@ import { useEffect, useMemo } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import hash from 'object-hash'
 import { LocationDetailCache } from '#/cache'
+import { useToken } from '@chakra-ui/react'
+import useSetRootBg from 'Functions/useSetRootBg'
+import useCache from 'Functions/useCache'
 
 export default function LocationPage() {
   // const { locationStore } = useDataContext()
   // const { getLocation, addLocation } = locationStore
   const city = useCityParam()
+  const { pathname } = useLocation()
   const locationHash = useLocationHashParam()
 
   // pre-defined as backup plan
@@ -59,9 +63,15 @@ export default function LocationPage() {
       LocationDetailCache[hash(location)] = location
     }
   }, [location])
+
+  useSetRootBg('gray.50')
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
+
   return (
     <Fragment>
-      <LocationBackButton />
+      <LocationBackButton py={3} />
       <LocationDetail data={location} />
     </Fragment>
   )

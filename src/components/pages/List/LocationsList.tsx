@@ -29,6 +29,7 @@ import { useDataContext } from 'Components/DataContext'
 import { urlToValue } from 'Functions/regionValueNormalizer'
 import { LocationDetailCache } from '#/cache'
 import { useCityParam } from 'Functions/useValidParams'
+import { DateTime } from 'luxon'
 
 function LocationItem(props: { location: Locations }) {
   const { location } = props
@@ -36,7 +37,8 @@ function LocationItem(props: { location: Locations }) {
   const regMethod = regMethodNormalizer(location.registration)
   return (
     <LinkBox
-      as={VStack}
+      display="flex"
+      flexDir="column"
       boxShadow="sm"
       border="1px solid"
       borderColor="gray.100"
@@ -66,8 +68,8 @@ function LocationItem(props: { location: Locations }) {
           <Heading
             size="sm"
             letterSpacing={0.3}
-            color="green.600"
-            fontWeight="semibold"
+            // color="green.600"
+            fontWeight="bold"
             mb={2}
           >
             <LinkOverlay as={RouterLink} to={hash(location)}>
@@ -144,7 +146,13 @@ function LocationItem(props: { location: Locations }) {
             fontWeight="semibold"
             order={2}
           >
-            {location.datestart} - {location.dateend}
+            {DateTime.fromSQL(location.datestart).toLocaleString(
+              DateTime.DATE_MED,
+            )}{' '}
+            -{' '}
+            {DateTime.fromSQL(location.dateend).toLocaleString(
+              DateTime.DATE_MED,
+            )}
           </Text>
         </Flex>
       </HStack>
