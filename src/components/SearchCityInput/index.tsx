@@ -18,54 +18,56 @@ import {
   useEffect,
   useMemo,
   useRef,
+  useState,
 } from 'react'
 import { RiCloseLine, RiSearchLine } from 'react-icons/ri'
 import type { City } from 'types/api'
 import CityDropdown from './Dropdown'
-import Fuse from 'fuse.js'
+import type Fuse from 'fuse.js'
 import useHasFocusWithin from 'Functions/useHasFocusWithin'
 import mergeRefs from 'react-merge-refs'
 import { useLocation, useMatch } from 'react-router-dom'
 import * as s from 'superstruct'
-import { urlToValue } from 'Functions/regionValueNormalizer'
+import { apiToValue, urlToValue } from 'Functions/regionValueNormalizer'
 import { useCityParam } from 'Functions/useValidParams'
+import { useStoreContext } from 'Components/StoreContext'
 
 type Props = Parameters<typeof VStack>[0] & {
   onFocusWithin?: (state: boolean) => void
 }
 const SearchCityInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const { onFocusWithin, ...rest } = props
+
   const { regions } = useDataContext()
   const { isLoading } = useLoadingContext()
-  const cities: City[] | null = useMemo(() => {
-    if (regions == null) return null
-    return regions
-      .map((region) =>
-        region.city.map((city) => ({ city, province: region.province })),
-      )
-      .flat()
-  }, [regions])
-  const { search, results } = useFuzzySearch(cities, {
-    keys: ['city'],
-  })
-  const dropdownData = useMemo(() => {
-    return results.map((result) => result.item).slice(0, 5)
-  }, [results])
+
+  const {
+    searchFuse: [searchFuse],
+    searchInput: [searchInput, setSearchInput],
+  } = useStoreContext()
+  // const dropdownData = useMemo(() => {
+  //   return results.map((result) => result.item).slice(0, 5)
+  // }, [results])
+
+  const [dropdownData, setDropdownData] = useState<City[]>(
+    searchInput?.dropdownData ?? [],
+  )
+  const search = useCallback(
+    (...props: Parameters<Fuse<City>['search']>) => {
+      if (searchFuse == null) return null
+      const result = searchFuse.search(...props)
+      setDropdownData(result.slice(0, 5).map((r) => r.item))
+      return result
+    },
+    [searchFuse],
+  )
+  useEffect(() => {
+    if (searchInput != null) setDropdownData(searchInput.dropdownData)
+  }, [searchInput])
 
   const inputRef = useRef<HTMLInputElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const { hasFocus, setFocus } = useHasFocusWithin(containerRef)
-
-  // const match = useMatch(':province/:city')
-  const param = useCityParam()
-  const location = useLocation()
-
-  useEffect(() => {
-    if (inputRef.current == null || param == null) return
-
-    inputRef.current.value = param.city
-    search(param.city)
-  }, [param])
 
   useEffect(() => {
     if (onFocusWithin) onFocusWithin(hasFocus)
@@ -134,6 +136,7 @@ const SearchCityInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
           // pr={hasFocus ? 20 : 10}
           pr={10}
           ref={inputRef}
+          defaultValue={searchInput?.inputValue}
           onInput={(e) => {
             search(inputRef.current!.value)
           }}
@@ -146,7 +149,12 @@ const SearchCityInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
         onClickItem={(city, e) => {
           console.log('clicked', city)
           if (inputRef.current == null) return
-          inputRef.current.value = city.city
+          const displayValue = apiToValue(city)
+          inputRef.current.value = displayValue.city
+          setSearchInput({
+            inputValue: displayValue.city,
+            dropdownData,
+          })
           setFocus(false)
           document.body.focus()
         }}

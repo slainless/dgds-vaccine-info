@@ -2,11 +2,9 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import './index.css'
 import { HashRouter, Routes, Route, Outlet } from 'react-router-dom'
-import MainPage from './pages/Main'
-import DetailPage from './pages/Detail'
 import HomePage from './pages/Home'
 import ListPage from './pages/List'
-import LocationPage from './pages/Location'
+import DetailPage from './pages/Detail'
 
 ReactDOM.render(
   <React.StrictMode>
@@ -16,7 +14,7 @@ ReactDOM.render(
           <Route index element={<HomePage />} />
           <Route path=":province/:city">
             <Route index element={<ListPage />} />
-            <Route path=":locationHash" element={<LocationPage />} />
+            <Route path=":locationHash" element={<DetailPage />} />
           </Route>
         </Route>
       </Routes>

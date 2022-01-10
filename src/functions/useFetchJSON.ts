@@ -6,12 +6,16 @@ import defaultParams from './defaultParams'
 type Options = {
   name: FetchCode
 }
-export default function useFetchJSON<T>(input: RequestInfo, options: Options) {
+export default function useFetchJSON<T>(
+  input: RequestInfo | null,
+  options: Options,
+) {
   const { name } = options
   const [res, setRes] = useState<T>()
   const { setProgress, getProgress } = useLoadingContext()
 
   async function start() {
+    if (input == null) return
     setProgress(name, 0)
     const response = await fetch(input)
     const reader = response.body!.getReader()

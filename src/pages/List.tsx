@@ -1,10 +1,10 @@
 import { VStack } from '@chakra-ui/react'
-import ListLocationsList from 'Components/pages/List/LocationsList'
+import TheList from 'Components/pages/List/TheList'
 import ListSearchBar from 'Components/pages/List/SearchBar'
 import useFetchLocations from 'Functions/useFetchLocations'
 import { useLocation, useParams } from 'react-router-dom'
 import { useDataContext } from 'Components/DataContext'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { urlToValue, valueToApi } from 'Functions/regionValueNormalizer'
 import { useCityParam } from 'Functions/useValidParams'
 import hash from 'object-hash'
@@ -14,65 +14,57 @@ import { LocationListCache } from '#/cache'
 import useCache from 'Functions/useCache'
 import useScrollTracker from 'Functions/useScrollTracker'
 import { useStoreContext } from 'Components/StoreContext'
+import useSetInitialSearch from 'Functions/useSetInitialSearch'
 
 export default function ListPage() {
-  const { regions } = useDataContext()
+  // const { regions } = useDataContext()
+  const {
+    locations: [locationsStore, setLocationsStore],
+  } = useStoreContext()
+  const { pathname } = useLocation()
   const city = useCityParam()
-  const { lastLocation, setLastLocation } = useCache()
 
   const { locations: l, startFetch } = useFetchLocations(
     city ? valueToApi(city) : null,
   )
-  const location = useLocation()
 
-  // only fetch when city is not null and last param !== current param
+  // only fetch when locationsStore is null or
+  // locationsStore.pathname is not current pathname
   //
-  // BACKGROUND:
-  // this is to prevent unneccessary fetching of locations.
-  // because every back nav from detail page to this page will
-  // clear `locations` value, which means we have to fetch locations every
-  // time we back navigate from detail page to list page.
-  //
-  // SOLUTION:
-  // To prevent this, we store last param, which is used
-  // to compare against current param. fetching will only be fired when
-  // last param !== current param.
+  // we are using context to make the data persist and
+  // only fetch when not in last pathname
+
   useEffect(() => {
-    const lastHash = lastLocation?.pathname
-    if (city == null) return
-    if (lastHash != null && hash(location.pathname) === hash(lastHash)) return
-    startFetch()
-  }, [city])
-
-  // will take advantage of `locations` initial value which is null
-  // if null, then return cached value, else using newly fetched data
-  // will use `locations` as trigger, meaning:
-  // - only triggered on initial value: null
-  // - when `startFetch` above is fired
-  //   - which is only fired when last param !== current param
-  const locations = useMemo(() => {
-    if (l == null) return lastLocation?.locations ?? null
-    return l
-  }, [l])
+    if (locationsStore == null || locationsStore.pathname !== pathname)
+      startFetch()
+  }, [pathname, city])
 
   useEffect(() => {
     if (l == null) return
-    setLastLocation({
-      pathname: location.pathname,
-      locations: l,
+    const uniqueMap = Array.from(new Map(l.map((v) => [hash(v), v])).values())
+    setLocationsStore({
+      data: uniqueMap,
+      pathname,
     })
   }, [l])
 
   useSetRootBg('gray.50')
-  const { restoreScroll } = useScrollTracker(location.pathname, true)
+  useSetInitialSearch()
+  // const { restoreScroll } = useScrollTracker(pathname, true)
+  // useEffect(() => {
+  //   restoreScroll()
+  // }, [pathname])
+
   useEffect(() => {
-    restoreScroll(true)
-  }, [location, l, locations])
+    console.log(city)
+    if (city == null) return
+    if (city === false) window.location.replace('/404.html')
+  }, [city])
 
   return (
     <Fragment>
       <ListSearchBar />
-      <ListLocationsList data={locations} />
+      <TheList data={locationsStore?.data ?? null} />
     </Fragment>
   )
 }

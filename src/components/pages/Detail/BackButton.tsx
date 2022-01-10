@@ -10,7 +10,7 @@ export default function LocationBackButton(
     <Container {...rest}>
       <Link
         as={RouterLink}
-        to={'../'}
+        to={'..'}
         layerStyle="constraint-sm"
         alignItems="center"
         p={0}

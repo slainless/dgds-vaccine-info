@@ -1,38 +1,35 @@
+import { LocationDetailCache } from '#/cache'
 import {
-  Container,
-  VStack,
+  Badge,
+  Button,
+  Flex,
   Text,
   Heading,
-  Box,
-  Grid,
-  Button,
   HStack,
   Icon,
-  Badge,
-  Flex,
   LinkBox,
   LinkOverlay,
+  VStack,
 } from '@chakra-ui/react'
-import { useParams } from 'react-router-dom'
-import type { City, Locations } from 'types/api'
-import { RiBuildingLine, RiMapPin2Fill } from 'react-icons/ri'
-import { FcClock } from 'react-icons/fc'
+import regMethodNormalizer from 'Functions/regMethodNormalizer'
+import { DateTime } from 'luxon'
 import {
-  MdLocationOn,
   MdAccessTimeFilled,
   MdEventAvailable,
+  MdLocationOn,
 } from 'react-icons/md'
-import regMethodNormalizer from 'Functions/regMethodNormalizer'
-import { Link as RouterLink } from 'react-router-dom'
+import type { Locations } from 'types/api'
 import hash from 'object-hash'
-import { useDataContext } from 'Components/DataContext'
-import { urlToValue } from 'Functions/regionValueNormalizer'
-import { LocationDetailCache } from '#/cache'
-import { useCityParam } from 'Functions/useValidParams'
-import { DateTime } from 'luxon'
+import { Link as RouterLink } from 'react-router-dom'
+import { useEffect } from 'react'
 
-function LocationItem(props: { location: Locations }) {
-  const { location } = props
+export default function ListItem(
+  props: Parameters<typeof LinkBox>[0] &
+    Parameters<typeof RouterLink>[0] & {
+      location: Locations
+    },
+) {
+  const { location, to, ...rest } = props
 
   const regMethod = regMethodNormalizer(location.registration)
   return (
@@ -44,6 +41,7 @@ function LocationItem(props: { location: Locations }) {
       borderColor="gray.100"
       borderRadius="md"
       bgColor="white"
+      // hidden={true}
       pt={4}
       pb={2}
       px={5}
@@ -51,10 +49,6 @@ function LocationItem(props: { location: Locations }) {
       gridGap={4}
       // templateColumns="auto max-content"
       alignItems="stretch"
-      onClick={() => {
-        // addLocation({ ...urlToValue({ province, city }), location })
-        LocationDetailCache[hash(location)] = location
-      }}
     >
       <Flex gridGap={2}>
         <VStack
@@ -72,16 +66,14 @@ function LocationItem(props: { location: Locations }) {
             fontWeight="bold"
             mb={2}
           >
-            <LinkOverlay as={RouterLink} to={hash(location)}>
+            <LinkOverlay as={RouterLink} to={to}>
               {location.title}
             </LinkOverlay>
           </Heading>
-          {/* <Flex> */}
           <Text fontSize="0.825rem" color="gray.500">
             <Icon as={MdLocationOn} mr={1} color="gray.300" boxSize={4} />
             {location.address}
           </Text>
-          {/* </Flex> */}
         </VStack>
         <VStack className="link" width="max-content" alignItems="stretch">
           <Button size="xs" as="a" href={location.link} target="_blank">
@@ -120,7 +112,6 @@ function LocationItem(props: { location: Locations }) {
           </Badge>
         </Flex>
         <Flex alignItems="center" opacity={0.6} gridGap={2}>
-          {/* <Heading fontSize="xs">Jam Operasional</Heading> */}
           <Icon
             as={MdAccessTimeFilled}
             boxSize={4}
@@ -138,7 +129,6 @@ function LocationItem(props: { location: Locations }) {
           </Text>
         </Flex>
         <Flex alignItems="center" opacity={0.6} gridGap={2} width="100%">
-          {/* <Heading fontSize="xs">Jam Operasional</Heading> */}
           <Icon as={MdEventAvailable} boxSize={4} color="red.500" order={1} />
           <Text
             fontSize="xs"
@@ -157,29 +147,5 @@ function LocationItem(props: { location: Locations }) {
         </Flex>
       </HStack>
     </LinkBox>
-  )
-}
-
-export default function ListLocationsList(
-  props: Parameters<typeof VStack>[0] & {
-    data: Locations[] | null
-  },
-) {
-  const { data, ...rest } = props
-  return (
-    <Container
-      as={VStack}
-      layerStyle="constraint-sm"
-      justifyContent="center"
-      spacing={0}
-      gridGap={3}
-      textAlign="center"
-      alignItems="stretch"
-      py={5}
-    >
-      {data?.map((location, i) => (
-        <LocationItem location={location} key={i} />
-      ))}
-    </Container>
   )
 }

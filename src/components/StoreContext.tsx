@@ -1,6 +1,7 @@
 import contextFactory from 'Functions/contextFactory'
 import type { Location } from 'history'
-import type { Locations } from 'types/api'
+import type { City, Locations } from 'types/api'
+import type Fuse from 'fuse.js'
 
 type Context = {
   lastLocationCache: ReactState<{
@@ -13,6 +14,12 @@ type Context = {
     data: Locations[]
     pathname: string
   } | null>
+  searchFuse: ReactState<Fuse<City> | null>
+  searchInput: ReactState<{
+    dropdownData: City[]
+    inputValue: string
+  } | null>
+  locationCache: ReactState<Record<string, Locations>>
 }
 export const {
   context: StoreContext,
@@ -23,4 +30,7 @@ export const {
   detailCache: [{}, (_) => _],
   lastScroll: [{}, (_) => _],
   locations: [null, (_) => _],
+  searchFuse: [null, (_) => _],
+  searchInput: [null, (_) => _],
+  locationCache: [{}, (_) => _],
 })

@@ -17,7 +17,7 @@ import {
   MdInfoOutline,
 } from 'react-icons/md'
 import { NavLink as RouterLink, useLocation } from 'react-router-dom'
-import useCache from './../../functions/useCache'
+import { useStoreContext } from 'Components/StoreContext'
 
 function NavButton(
   props: Parameters<typeof Button>[0] &
@@ -58,12 +58,14 @@ function NavButton(
 export default function LayoutFooter() {
   const location = useLocation()
   const { isLoading } = useLoadingContext()
-  const { lastLocation } = useCache()
+  const {
+    locations: [locations],
+  } = useStoreContext()
 
   const locationLink = useMemo(() => {
     // alert('changing location!')
-    return lastLocation?.pathname ?? null
-  }, [lastLocation])
+    return locations?.pathname ?? null
+  }, [locations])
   return (
     <Box
       width="full"
@@ -71,7 +73,7 @@ export default function LayoutFooter() {
       borderTop="1px solid"
       borderTopColor="gray.200"
       height={14}
-      position="sticky"
+      position="fixed"
       bottom={0}
       zIndex="docked"
     >

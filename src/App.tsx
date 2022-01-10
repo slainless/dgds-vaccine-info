@@ -5,6 +5,7 @@ import { LoadingProvider } from 'Components/LoadingContext'
 import ProgressBar from 'Components/ProgressBar'
 import { StoreProvider } from 'Components/StoreContext'
 import { useFetchRegions } from 'Functions/useFetchRegions'
+import Fuse from 'fuse.js'
 import { useEffect, useMemo, useState } from 'react'
 import { Outlet } from 'react-router'
 import Startup from './Startup'
@@ -20,7 +21,10 @@ function App({}: AppProps) {
   const lastLocationCache = useState<any>(null)
   const detailCache = useState<any>({})
   const lastScroll = useState<any>({})
-  const locationsState = useState<any>(null)
+  const locations = useState<any>(null)
+  const searchFuse = useState<any>(null)
+  const searchInput = useState<any>(null)
+  const locationCache = useState<any>({})
 
   return (
     <ChakraProvider theme={Theme}>
@@ -30,11 +34,14 @@ function App({}: AppProps) {
             lastLocationCache,
             detailCache,
             lastScroll,
-            locations: locationsState,
+            locations,
+            searchFuse,
+            searchInput,
+            locationCache,
           }}
         >
           <Startup>
-            <Flex flexDirection="column" minH="100%" spacing={0}>
+            <Flex flexDirection="column" minH="100%" spacing={0} pb={14}>
               <Outlet />
             </Flex>
             <LayoutFooter />

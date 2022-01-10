@@ -36,8 +36,8 @@ export function useDataContext() {
       const { city, province } = props
       const hashed = hash(props)
 
-      let result: boolean
-      if ((result = isCityValidCache.get(hashed) !== undefined)) return result
+      let result = isCityValidCache.get(hashed)
+      if (result !== undefined) return result
 
       const region = regions.find((r) => r.province === province)
       result = region != null && !!region.city.find((c) => c === city)

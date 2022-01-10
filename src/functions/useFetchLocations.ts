@@ -7,7 +7,9 @@ import useFetchJSON from './useFetchJSON'
 export default function useFetchLocations(input: City | null) {
   const { province, city } = input ?? {}
   const { response, ...rest } = useFetchJSON(
-    `https://api.vaksinasi.id/locations/${province}?city=${city}`,
+    input
+      ? `https://api.vaksinasi.id/locations/${province}?city=${city}`
+      : null,
     { name: 'location' },
   )
   const locations = useMemo(() => {

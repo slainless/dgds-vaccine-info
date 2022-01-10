@@ -63,7 +63,6 @@ export default function CityDropdown(
   const { data, onClickItem, ...rest } = defaults(props, {
     onClickItem: () => {},
   })
-  const { pathname } = useLocation()
   // const isListPage = useMatch(':province/:city')
   // console.log(isListPage)
   return (
@@ -90,7 +89,6 @@ export default function CityDropdown(
           key={i}
           // shouldGiveFocusOnPageChange={isListPage ? false : true}
           onClick={(e) => {
-            console.log('fuc', onClickItem)
             onClickItem(city, e)
           }}
         />

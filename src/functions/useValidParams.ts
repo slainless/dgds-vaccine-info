@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import { apiToValue, urlToValue, valueToApi } from './regionValueNormalizer'
 import hash from 'object-hash'
 
-type CityParam = { city: string; province: string } | null
+type CityParam = { city: string; province: string } | null | false
 const cityParamCache = new Map<string, CityParam>()
 export function useCityParam() {
   const { isCityValid, regions } = useDataContext()
@@ -20,7 +20,7 @@ export function useCityParam() {
     if ((result = cityParamCache.get(hashed) ?? null)) return result
 
     const validParameters = valueToApi(urlToValue({ province, city }))
-    result = isCityValid(validParameters) ? apiToValue(validParameters) : null
+    result = isCityValid(validParameters) ? apiToValue(validParameters) : false
     cityParamCache.set(hashed, result)
     return result
   }, [params, regions])

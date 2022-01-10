@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react'
+import { isEqual } from 'lodash-es'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import defaultParams from './defaultParams'
 type Ref = React.MutableRefObject<HTMLElement | null>
 type StyleParams = { deltaX: number; deltaY: number }
@@ -16,7 +17,7 @@ const getChildrenRects = (node: HTMLElement) =>
  * @param trigger State to watch for change
  */
 export default function useFlipMove(
-  trigger: React.ComponentState,
+  target: React.RefObject<HTMLElement>,
   options?: {
     applyOnChildren?: boolean
     reversionStyle?: (props: StyleParams) => Partial<CSSStyleDeclaration>
@@ -37,77 +38,77 @@ export default function useFlipMove(
       }),
     },
   )
+  const getRects = (node: HTMLElement) =>
+    applyOnChildren ? getChildrenRects(node) : [node.getBoundingClientRect()]
 
   const [rects, setRects] = useState<DOMRect[] | null>(null)
-  const [node, setNode] = useState<HTMLElement | null>(null)
-  const ref = useCallback((node: HTMLElement | null) => {
-    if (node == null) {
-      setNode(null)
-      return
-    }
+  function update() {
+    console.log('update fired!')
+    setRects((oldRects) => {
+      const targetEl = target.current
+      if (targetEl == null) return null
 
-    if (applyOnChildren) setRects(getChildrenRects(node))
-    else setRects([node.getBoundingClientRect()])
+      const newRects = getRects(targetEl)
+      if (oldRects == null || isEqual(oldRects, newRects)) return newRects
+      console.log(
+        oldRects,
+        newRects,
+        getChildrenElements(targetEl),
+        applyOnChildren,
+      )
 
-    setNode(node)
-    return
-  }, [])
+      const styleParams: StyleParams[] = applyOnChildren
+        ? newRects.map((n, i) => {
+            const o = oldRects[i]
+            return { deltaX: o.left - n.left, deltaY: o.top - n.top }
+          })
+        : [
+            {
+              deltaX: oldRects[0].left - newRects[0].left,
+              deltaY: oldRects[0].top - newRects[0].top,
+            },
+          ]
 
-  useEffect(() => {
-    if (node == null) return
+      const applyStyle = (
+        style: (param: StyleParams) => Partial<CSSStyleDeclaration>,
+      ) => {
+        const applyOnNode = (
+          node: HTMLElement,
+          s: Partial<CSSStyleDeclaration>,
+        ) =>
+          Object.entries(s).forEach(([key, css]) => {
+            // TODO: fix type
+            // @ts-ignore
+            node.style[key] = css
+          })
 
-    const oldRect = rects
-    const newRect = applyOnChildren
-      ? getChildrenRects(node)
-      : [node.getBoundingClientRect()]
-
-    setRects(newRect)
-    if (oldRect == null) return
-
-    const styleParams: StyleParams[] = applyOnChildren
-      ? newRect.map((n, i) => {
-          const o = oldRect[i]
-          return { deltaX: o.left - n.left, deltaY: o.top - n.top }
-        })
-      : [
-          {
-            deltaX: oldRect[0].left - newRect[0].left,
-            deltaY: oldRect[0].top - newRect[0].top,
-          },
-        ]
-
-    const applyStyle = (
-      style: (param: StyleParams) => Partial<CSSStyleDeclaration>,
-    ) => {
-      const applyOnNode = (
-        node: HTMLElement,
-        s: Partial<CSSStyleDeclaration>,
-      ) =>
-        Object.entries(s).forEach(([key, css]) => {
-          // TODO: fix type
-          // @ts-ignore
-          node.style[key] = css
-        })
-
-      if (applyOnChildren)
-        Object.entries(Array.from(node.children)).forEach(([i, child]) => {
-          const param = styleParams[+i]
-          if (child instanceof HTMLElement) applyOnNode(child, style(param))
-        })
-      else {
-        const param = styleParams[0]
-        applyOnNode(node, style(param))
+        if (applyOnChildren)
+          Object.entries(Array.from(targetEl.children)).forEach(
+            ([i, child]) => {
+              const param = styleParams[+i]
+              if (child instanceof HTMLElement) applyOnNode(child, style(param))
+            },
+          )
+        else {
+          const param = styleParams[0]
+          applyOnNode(targetEl, style(param))
+        }
       }
-    }
-    // @ts-ignore
-    requestAnimationFrame(() => {
-      applyStyle(reversionStyle)
-
+      // @ts-ignore
       requestAnimationFrame(() => {
-        applyStyle(normalizationStyle)
-      })
-    })
-  }, [trigger])
+        applyStyle(reversionStyle)
 
-  return { targetRef: ref }
+        requestAnimationFrame(() => {
+          applyStyle(normalizationStyle)
+        })
+      })
+      return newRects
+    })
+  }
+
+  // useEffect(() => {
+  //   if (ref.current == null) return
+  // }, [ref])
+
+  return { updatePosition: update }
 }
