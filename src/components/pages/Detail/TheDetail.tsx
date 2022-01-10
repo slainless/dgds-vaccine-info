@@ -11,9 +11,7 @@ export default function LocationDetail(props: { data: Locations | null }) {
       <Heading size="md" as="h1" ml={5}>
         {data?.title}
       </Heading>
-      <Text ml={5}>
-        {city?.province}, {city?.city}
-      </Text>
+      <Text ml={5}>{city ? `${city.province}, ${city.city}` : null}</Text>
       <VStack
         alignItems="stretch"
         bgColor="white"

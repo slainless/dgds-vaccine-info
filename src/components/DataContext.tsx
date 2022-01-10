@@ -3,7 +3,6 @@ import type { CityValue, Locations, ProvinceValue, Region } from 'types/api'
 import { useCallback, useContext, useEffect } from 'react'
 import { string } from 'superstruct'
 import type { City } from 'types/api'
-import type { LocationStore } from 'types/general'
 import { cloneDeep, merge } from 'lodash-es'
 import hash from 'object-hash'
 
