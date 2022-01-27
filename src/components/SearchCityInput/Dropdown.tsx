@@ -31,10 +31,11 @@ function DropdownItem(
   )
   return (
     <Link
+      className="city-item"
       as={RouterLink}
       to={`/${urlValue?.province}/${urlValue?.city}`}
       sx={{
-        '&:first-of-type :first-of-type': {
+        '&:first-of-type > div': {
           borderTop: 'none',
         },
       }}

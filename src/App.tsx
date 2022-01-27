@@ -1,4 +1,4 @@
-import { ChakraProvider, Flex, Portal } from '@chakra-ui/react'
+import { Box, ChakraProvider, Flex, Portal } from '@chakra-ui/react'
 import LayoutFooter from 'Components/layouts/Footer'
 import { LoadingProvider } from 'Components/LoadingContext'
 import ProgressBar from 'Components/ProgressBar'
@@ -23,9 +23,7 @@ function App({}: AppProps) {
       <LoadingProvider value={{ loading, progress }}>
         <StoreInit>
           <Bootstrap>
-            <Flex flexDirection="column" minH="100%" spacing={0} pb={14}>
-              <Outlet />
-            </Flex>
+            <Outlet />
             <LayoutFooter />
             <Portal>
               <ProgressBar />

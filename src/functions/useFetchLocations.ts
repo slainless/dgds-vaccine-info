@@ -27,11 +27,12 @@ export default function useFetchLocations(input: UCity | null) {
     if (isValidResponse(response)) {
     } else throw new Error('Oops! Looks like there are some error on API side!')
 
-    if (isValidLocations(response.data)) {
+    const data = response.data
+    if (isValidLocations(data)) {
     } else
       throw new Error('Data of regions received is different from the schema')
 
-    return response.data
+    return data
   }, [response])
 
   return { locations, ...rest }

@@ -40,11 +40,15 @@ export default function HomeHero(props: Parameters<typeof Container>[0]) {
       ref={flipMoveRef}
       {...props}
     >
-      <Box width={80} order={hasFocus ? 2 : 1} mt={10}>
+      <Box
+        width={80}
+        // order={hasFocus ? 2 : 1}
+        // mt={10}
+      >
         <Image src={PUBLIC_URL('assets/5063408.svg')} />
       </Box>
       <SearchCityInput
-        order={hasFocus ? 1 : 3}
+        // order={hasFocus ? 1 : 3}
         width="90%"
         ref={inputRef}
         onFocusWithin={(state) => {
@@ -54,7 +58,10 @@ export default function HomeHero(props: Parameters<typeof Container>[0]) {
           })
         }}
       />
-      <Heading size="lg" order={hasFocus ? 3 : 2}>
+      <Heading
+        size="lg"
+        // order={hasFocus ? 3 : 2}
+      >
         Dapatkan informasi{' '}
         <Heading as="span" size="lg" color="green.400">
           lokasi vaksin
@@ -62,7 +69,9 @@ export default function HomeHero(props: Parameters<typeof Container>[0]) {
         Covid-19 terdekat!
       </Heading>
       <Box order={4} fontSize="md">
-        <Text>
+        <Text
+        // maxW={['42ch', 'initial']}
+        >
           Kamu juga bisa menemukan informasi lainnya seputar Covid-19:
         </Text>
 

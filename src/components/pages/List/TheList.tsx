@@ -37,6 +37,8 @@ export default function TheList(
       textAlign="center"
       alignItems="stretch"
       py={5}
+      pb={20}
+      {...rest}
     >
       {data?.map((location, i) => {
         const locationHash = hash(location)
@@ -55,7 +57,7 @@ export default function TheList(
       })}
       <Portal>
         <VStack
-          hidden={isLoading || data == null || data.length > 1}
+          hidden={isLoading || data == null || data.length > 0}
           position="fixed"
           top="50%"
           left="50%"

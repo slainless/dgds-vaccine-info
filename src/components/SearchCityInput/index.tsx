@@ -25,11 +25,13 @@ import type Fuse from 'fuse.js'
 import useHasFocusWithin from 'Functions/useHasFocusWithin'
 import mergeRefs from 'react-merge-refs'
 import { useStoreContext } from 'Components/StoreContext'
+import useIsMobile from 'Functions/useIsMobile'
 
 type Props = Parameters<typeof VStack>[0] & {
   onFocusWithin?: (state: boolean) => void
 }
 const SearchCityInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
+  const isMobile = useIsMobile()
   const { onFocusWithin, ...rest } = props
 
   const {
@@ -76,12 +78,25 @@ const SearchCityInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
       position="relative"
       ref={mergeRefs([ref ?? (() => {}), containerRef])}
       zIndex="docked"
+      className={
+        hasFocus && isMobile && dropdownData.length !== 0 ? 'is-mobile' : ''
+      }
       {...rest}
+      sx={{
+        '&.is-mobile': {
+          position: 'fixed',
+          top: 0,
+          width: '100%',
+        },
+      }}
     >
       <InputGroup>
         <InputRightElement
           // w={hasFocus ? 20 : 10}
           w={10}
+          alignItems="center"
+          justifyContent="center"
+          height="100%"
         >
           <IconButton
             variant="ghost"
@@ -137,6 +152,12 @@ const SearchCityInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
             search(inputRef.current!.value)
           }}
           disabled={isLoading}
+          sx={{
+            '.is-mobile &': {
+              borderRadius: 'none',
+              py: 6,
+            },
+          }}
         />
       </InputGroup>
       <CityDropdown
@@ -152,6 +173,12 @@ const SearchCityInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
           })
           setFocus(false)
           document.body.focus()
+        }}
+        sx={{
+          '.is-mobile &': {
+            borderRadius: 'none',
+            height: '100vh',
+          },
         }}
       />
     </VStack>

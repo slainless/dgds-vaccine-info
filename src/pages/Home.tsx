@@ -14,12 +14,9 @@ export default function HomePage() {
   }, [pathname])
   return (
     <Fragment>
-      <HomeHero
-        mb={24}
-        // minH={['initial', 'initial', '100vh']}
-      />
-      <HomeSlider />
-      <HomeFooter />
+      <HomeHero minH="100%" pt={0} pb={14} />
+      {/* <HomeSlider />
+      <HomeFooter /> */}
     </Fragment>
   )
 }
