@@ -11,7 +11,7 @@ import regMethodNormalizer from 'Functions/regMethodNormalizer'
 import { DateTime } from 'luxon'
 import { MdAccessTimeFilled, MdEventAvailable } from 'react-icons/md'
 import { RiExternalLinkFill, RiTeamFill } from 'react-icons/ri'
-import type { Locations } from 'types/api'
+import type { LocationDetail, VidDetail } from 'types/data'
 
 const Wrapper = (props: Parameters<typeof VStack>[0]) => (
   <Flex
@@ -45,9 +45,9 @@ const Title = (props: Parameters<typeof Heading>[0]) => (
 )
 
 export default function DataDisplay(props: {
-  k: keyof Locations
-  value: Locations[keyof Locations]
-  location: Locations
+  k: keyof VidDetail
+  value: VidDetail[keyof VidDetail]
+  location: VidDetail
 }) {
   const { value, k, location } = props
   switch (k) {

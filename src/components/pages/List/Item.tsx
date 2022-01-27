@@ -1,4 +1,3 @@
-import { LocationDetailCache } from '#/cache'
 import {
   Badge,
   Button,
@@ -18,16 +17,16 @@ import {
   MdEventAvailable,
   MdLocationOn,
 } from 'react-icons/md'
-import type { Locations } from 'types/api'
+import type { LocationDetail, VidDetail } from 'types/data'
 import hash from 'object-hash'
-import { Link as RouterLink } from 'react-router-dom'
+// import { Link as RouterLink } from 'react-router-dom'
 import { useEffect } from 'react'
 
 export default function ListItem(
-  props: Parameters<typeof LinkBox>[0] &
-    Parameters<typeof RouterLink>[0] & {
-      location: Locations
-    },
+  props: Parameters<typeof LinkBox>[0] & {
+    // Parameters<typeof RouterLink>[0] &
+    location: VidDetail
+  },
 ) {
   const { location, to, ...rest } = props
 
@@ -49,6 +48,7 @@ export default function ListItem(
       gridGap={4}
       // templateColumns="auto max-content"
       alignItems="stretch"
+      {...rest}
     >
       <Flex gridGap={2}>
         <VStack
@@ -66,7 +66,10 @@ export default function ListItem(
             fontWeight="bold"
             mb={2}
           >
-            <LinkOverlay as={RouterLink} to={to}>
+            <LinkOverlay
+            // as={RouterLink}
+            // to={to}
+            >
               {location.title}
             </LinkOverlay>
           </Heading>

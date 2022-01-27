@@ -1,10 +1,12 @@
-import type { Locations } from 'types/api'
+import type { LocationDetail, VidDetail } from 'types/data'
 import { Container, Heading, VStack, Text } from '@chakra-ui/react'
 import { useCityParam } from 'Functions/useValidParams'
 import DataDisplay from './DataDisplay'
 
-export default function LocationDetail(props: { data: Locations | null }) {
-  const { data, ...rest } = props
+export default function TheLocation(props: { data: LocationDetail | null }) {
+  const { data: _, ...rest } = props
+  // FIXME: need to check if detail is vaksinasi.id or kipi.covid.19.go.id
+  const data = props.data as VidDetail | null
   const city = useCityParam()
   return (
     <Container layerStyle="constraint-sm">
@@ -19,7 +21,8 @@ export default function LocationDetail(props: { data: Locations | null }) {
         borderRadius="lg"
         my={5}
         spacing={0}
-        wordBreak="break-word"
+        border="1px solid"
+        borderColor="gray.100"
       >
         {data == null
           ? null
@@ -27,7 +30,7 @@ export default function LocationDetail(props: { data: Locations | null }) {
               <DataDisplay
                 key={key}
                 value={value}
-                k={key as keyof Locations}
+                k={key as keyof LocationDetail}
                 location={data}
               />
             ))}

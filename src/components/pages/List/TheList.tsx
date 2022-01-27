@@ -4,23 +4,28 @@ import {
   Icon,
   Portal,
   Text,
+  useDisclosure,
   VStack,
 } from '@chakra-ui/react'
-import type { Locations } from 'types/api'
+import type { VidDetail } from 'types/data'
 import hash from 'object-hash'
-import { LocationDetailCache } from '#/cache'
 import ListItem from './Item'
 import { useEffect, useState } from 'react'
 import { useLoadingContext } from 'Components/LoadingContext'
 import { RiEmotionSadLine } from 'react-icons/ri'
+import DetailModal from './DetailModal'
 
 export default function TheList(
   props: Parameters<typeof VStack>[0] & {
-    data: Locations[] | null
+    data: VidDetail[] | null
   },
 ) {
   const { data, ...rest } = props
   const { isLoading } = useLoadingContext()
+  const { isOpen, onClose, onOpen } = useDisclosure()
+  const [selectedLocation, setSelectedLocation] = useState<VidDetail | null>(
+    null,
+  )
 
   return (
     <Container
@@ -40,8 +45,11 @@ export default function TheList(
             location={location}
             // key={locationHash}
             key={i}
-            to={locationHash}
-            onClick={() => {}}
+            // to={locationHash}
+            onClick={() => {
+              setSelectedLocation(location)
+              onOpen()
+            }}
           />
         )
       })}
@@ -63,6 +71,11 @@ export default function TheList(
           </Heading>
         </VStack>
       </Portal>
+      <DetailModal
+        isOpen={isOpen}
+        onClose={onClose}
+        detail={selectedLocation}
+      />
     </Container>
   )
 }

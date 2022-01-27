@@ -1,40 +1,30 @@
-import { DataProvider } from 'Components/DataContext'
 import { useFetchRegions } from 'Functions/useFetchRegions'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useLocation } from 'react-router-dom'
-import { cloneDeep, merge, throttle } from 'lodash-es'
 import { useStoreContext } from 'Components/StoreContext'
-import useScrollTracker from 'Functions/useScrollTracker'
-import useFuzzySearch from 'Functions/useFuzzySearch'
-import type { City } from 'types/api'
 import Fuse from 'fuse.js'
+import Indonesia from 'Functions/Indonesia'
 
-export default function Startup({ children }: { children: any }) {
+export default function Bootstrap({ children }: { children: any }) {
   const { startFetch, regions } = useFetchRegions()
   const {
-    searchFuse: [_, setSearchFuse],
+    searchFuse: [, setSearchFuse],
+    regions: [indonesia, setRegions],
   } = useStoreContext()
-  // const locationStore = useState<LocationStore | null>(null)
-  const { pathname } = useLocation()
-  // useScrollTracker(pathname, true)
 
+  // start fetching regions on loading the app
   useEffect(() => {
     startFetch()
   }, [])
 
-  const cities: City[] | null = useMemo(() => {
-    if (regions == null) return null
-    return regions
-      .map((region) =>
-        region.city.map((city) => ({ city, province: region.province })),
-      )
-      .flat()
+  useEffect(() => {
+    if (regions == null) return
+    setRegions(new Indonesia(regions))
   }, [regions])
 
   useEffect(() => {
-    if (cities == null) return
-    setSearchFuse(new Fuse(cities, { keys: ['city'] }))
-  }, [cities])
+    if (indonesia == null) return
+    setSearchFuse(new Fuse(indonesia.cities, { keys: ['city'] }))
+  }, [indonesia])
 
-  return <DataProvider value={{ regions }}>{children}</DataProvider>
+  return <>{children}</>
 }

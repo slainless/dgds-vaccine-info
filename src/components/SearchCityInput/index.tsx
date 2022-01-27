@@ -8,9 +8,7 @@ import {
   Spinner,
   VStack,
 } from '@chakra-ui/react'
-import { useDataContext } from 'Components/DataContext'
 import { useLoadingContext } from 'Components/LoadingContext'
-import useFuzzySearch from 'Functions/useFuzzySearch'
 import {
   ForwardedRef,
   forwardRef,
@@ -21,15 +19,11 @@ import {
   useState,
 } from 'react'
 import { RiCloseLine, RiSearchLine } from 'react-icons/ri'
-import type { City } from 'types/api'
+import type { UCity } from 'types/data'
 import CityDropdown from './Dropdown'
 import type Fuse from 'fuse.js'
 import useHasFocusWithin from 'Functions/useHasFocusWithin'
 import mergeRefs from 'react-merge-refs'
-import { useLocation, useMatch } from 'react-router-dom'
-import * as s from 'superstruct'
-import { apiToValue, urlToValue } from 'Functions/regionValueNormalizer'
-import { useCityParam } from 'Functions/useValidParams'
 import { useStoreContext } from 'Components/StoreContext'
 
 type Props = Parameters<typeof VStack>[0] & {
@@ -38,7 +32,9 @@ type Props = Parameters<typeof VStack>[0] & {
 const SearchCityInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
   const { onFocusWithin, ...rest } = props
 
-  const { regions } = useDataContext()
+  const {
+    regions: [regions],
+  } = useStoreContext()
   const { isLoading } = useLoadingContext()
 
   const {
@@ -49,11 +45,11 @@ const SearchCityInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
   //   return results.map((result) => result.item).slice(0, 5)
   // }, [results])
 
-  const [dropdownData, setDropdownData] = useState<City[]>(
+  const [dropdownData, setDropdownData] = useState<UCity[]>(
     searchInput?.dropdownData ?? [],
   )
   const search = useCallback(
-    (...props: Parameters<Fuse<City>['search']>) => {
+    (...props: Parameters<Fuse<UCity>['search']>) => {
       if (searchFuse == null) return null
       const result = searchFuse.search(...props)
       setDropdownData(result.slice(0, 5).map((r) => r.item))
@@ -149,10 +145,9 @@ const SearchCityInput = forwardRef<HTMLDivElement, Props>((props, ref) => {
         onClickItem={(city, e) => {
           console.log('clicked', city)
           if (inputRef.current == null) return
-          const displayValue = apiToValue(city)
-          inputRef.current.value = displayValue.city
+          inputRef.current.value = city.city
           setSearchInput({
-            inputValue: displayValue.city,
+            inputValue: city.city,
             dropdownData,
           })
           setFocus(false)

@@ -16,7 +16,7 @@ import useHasFocusWithin from 'Functions/useHasFocusWithin'
 import { useEffect, useRef, useState } from 'react'
 import { RiCheckboxCircleFill, RiEditCircleFill } from 'react-icons/ri'
 
-export default function HomeHero() {
+export default function HomeHero(props: Parameters<typeof Container>[0]) {
   const inputRef = useRef<HTMLDivElement>(null)
   const flipMoveRef = useRef<HTMLDivElement>(null)
   const [hasFocus, setFocus] = useState(false)
@@ -38,6 +38,7 @@ export default function HomeHero() {
       textAlign="center"
       py={5}
       ref={flipMoveRef}
+      {...props}
     >
       <Box width={80} order={hasFocus ? 2 : 1} mt={10}>
         <Image src={PUBLIC_URL('assets/5063408.svg')} />

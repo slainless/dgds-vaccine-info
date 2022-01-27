@@ -1,13 +1,13 @@
 import { kebabCase, mapValues, transform, upperFirst } from 'lodash-es'
-import type { City, CityValue, ProvinceValue } from 'types/api'
+import type { UCity, UCityValue, UProvinceValue } from 'types/data'
 
-const apiToValueTable: Partial<Record<CityValue | ProvinceValue, string>> = {
+const apiToValueTable: Partial<Record<UCityValue | UProvinceValue, string>> = {
   'Kota Makasar': 'Kota Makassar',
 }
 
 const valueToApiTable = transform<
   typeof apiToValueTable,
-  Record<string, CityValue | ProvinceValue>
+  Record<string, UCityValue | UProvinceValue>
 >(apiToValueTable, (r, v, k) => (r[v!] = k))
 
 const urlToValueTable: Record<string, string> = {
@@ -18,17 +18,17 @@ const urlToValueTable: Record<string, string> = {
 }
 
 /** *Will not validate value. Only contains basic api value fix* */
-export function apiToValue(city: City) {
+export function apiToValue(city: UCity) {
   return mapValues(city, (v) => apiToValueTable[v] ?? v)
 }
 
 /** *Will not validate value. Only contains basic api value fix* */
-export function valueToApi(city: { city: string; province: string }): City {
+export function valueToApi(city: { city: string; province: string }): UCity {
   return mapValues(city, (v) => valueToApiTable[v] ?? v)
 }
 
 /** *Will not validate value* */
-export function valueToUrl(city: City) {
+export function valueToUrl(city: UCity) {
   return mapValues(city, (v) => kebabCase(v).replace('.', ''))
 }
 

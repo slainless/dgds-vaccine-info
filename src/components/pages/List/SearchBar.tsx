@@ -1,14 +1,9 @@
 import { Container, VStack } from '@chakra-ui/react'
-import { useDataContext } from 'Components/DataContext'
 import SearchCityInput from 'Components/SearchCityInput'
 import useHasFocusWithin from 'Functions/useHasFocusWithin'
 import { useRef } from 'react'
-import { useParams } from 'react-router-dom'
-import type { CityValue, ProvinceValue } from 'types/api'
 
 export default function ListSearchBar() {
-  const inputRef = useRef<HTMLDivElement>(null)
-  const { hasFocus } = useHasFocusWithin(inputRef)
   return (
     <VStack
       justifyContent="center"
@@ -31,7 +26,7 @@ export default function ListSearchBar() {
         borderBottomColor="gray.100"
         pb={3}
       >
-        <SearchCityInput width="90%" ref={inputRef} />
+        <SearchCityInput width="90%" />
       </Container>
     </VStack>
   )

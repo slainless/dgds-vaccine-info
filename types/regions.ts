@@ -530,7 +530,7 @@ export default [
   {
     province: 'Sulawesi Selatan',
     city: [
-      'Kota Makasar',
+      'Kota Makassar',
       'Kota Palopo',
       'Kota Pare Pare',
       'Kab. Toraja Utara',

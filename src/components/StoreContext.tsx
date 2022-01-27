@@ -1,36 +1,30 @@
 import contextFactory from 'Functions/contextFactory'
 import type { Location } from 'history'
-import type { City, Locations } from 'types/api'
+import type { UCity, LocationDetail, URegion, VidDetail } from 'types/data'
 import type Fuse from 'fuse.js'
+import type Indonesia from 'Functions/Indonesia'
 
 type Context = {
-  lastLocationCache: ReactState<{
-    locations: Locations[]
-    pathname: string
-  } | null>
-  detailCache: ReactState<Record<string, Locations>>
   lastScroll: ReactState<Record<string, { left: number; top: number }>>
   locations: ReactState<{
-    data: Locations[]
+    data: VidDetail[]
     pathname: string
   } | null>
-  searchFuse: ReactState<Fuse<City> | null>
+  searchFuse: ReactState<Fuse<UCity> | null>
   searchInput: ReactState<{
-    dropdownData: City[]
+    dropdownData: UCity[]
     inputValue: string
   } | null>
-  locationCache: ReactState<Record<string, Locations>>
+  regions: ReactState<Indonesia | null>
 }
 export const {
   context: StoreContext,
   provider: StoreProvider,
   hook: useStoreContext,
 } = contextFactory<Context>({
-  lastLocationCache: [null, (_) => _],
-  detailCache: [{}, (_) => _],
   lastScroll: [{}, (_) => _],
   locations: [null, (_) => _],
   searchFuse: [null, (_) => _],
   searchInput: [null, (_) => _],
-  locationCache: [{}, (_) => _],
+  regions: [null, (_) => _],
 })

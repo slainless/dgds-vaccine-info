@@ -1,8 +1,10 @@
 import HomeFooter from 'Components/pages/Home/Footer'
 import HomeHero from 'Components/pages/Home/Hero'
+import HomeSlider from 'Components/pages/Home/Slider'
 import useSetRootBg from 'Functions/useSetRootBg'
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
+import 'pure-react-carousel/dist/react-carousel.es.css'
 
 export default function HomePage() {
   const { pathname } = useLocation()
@@ -12,7 +14,11 @@ export default function HomePage() {
   }, [pathname])
   return (
     <Fragment>
-      <HomeHero />
+      <HomeHero
+        mb={24}
+        // minH={['initial', 'initial', '100vh']}
+      />
+      <HomeSlider />
       <HomeFooter />
     </Fragment>
   )

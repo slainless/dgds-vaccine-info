@@ -26,6 +26,7 @@ export default function HomeFooter() {
       minH={24}
       // bgColor="green.50"
       py={5}
+      px={5}
     >
       <VStack spacing={0} gridGap={5}>
         {/* <Heading size="md">Informasi diperoleh dari:</Heading> */}
@@ -37,19 +38,21 @@ export default function HomeFooter() {
           zIndex="base"
           justifyContent="center"
           color="green.500"
-          sx={{
-            '&::before': {
-              content: "''",
-              width: '100%',
-              position: 'absolute',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              zIndex: 'hide',
-              display: 'block',
-              border: '1px solid',
-              borderColor: 'green.200',
-            },
-          }}
+          sx={
+            {
+              // '&::before': {
+              //   content: "''",
+              //   width: '100%',
+              //   position: 'absolute',
+              //   top: '50%',
+              //   transform: 'translateY(-50%)',
+              //   zIndex: 'hide',
+              //   display: 'block',
+              //   border: '1px solid',
+              //   borderColor: 'green.200',
+              // },
+            }
+          }
         >
           <Heading
             zIndex="base"

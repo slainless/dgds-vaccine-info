@@ -1,7 +1,6 @@
 import LocationBackButton from 'Components/pages/Detail/BackButton'
 import LocationDetail from 'Components/pages/Detail/TheDetail'
 import { useDataContext } from 'Components/DataContext'
-import { urlToValue, valueToApi } from 'Functions/regionValueNormalizer'
 import useFetchLocations from 'Functions/useFetchLocations'
 import { useCityParam, useLocationHashParam } from 'Functions/useValidParams'
 import { useEffect, useMemo } from 'react'

@@ -1,17 +1,27 @@
 import { useMemo, useState } from 'react'
-import type { City } from 'types/api'
+import type { UCity } from 'types/data'
 import isValidResponse from './isValidResponse'
 import isValidLocations from './isValidLocations'
 import useFetchJSON from './useFetchJSON'
+import { useStoreContext } from 'Components/StoreContext'
+import { ApiSource } from '#/definition'
 
-export default function useFetchLocations(input: City | null) {
-  const { province, city } = input ?? {}
-  const { response, ...rest } = useFetchJSON(
-    input
-      ? `https://api.vaksinasi.id/locations/${province}?city=${city}`
-      : null,
-    { name: 'location' },
-  )
+type VidUrl = `https://api.vaksinasi.id/locations/${string}?city=${string}`
+type KipiUrl = `https://kipi.covid19.go.id/api/get-faskes-vaksinasi`
+
+export default function useFetchLocations(input: UCity | null) {
+  const {
+    regions: [regions],
+  } = useStoreContext()
+
+  const apiCity = input
+    ? regions?.toApi(input, ApiSource.VAKSINASI_ID) ?? null
+    : null
+  const url = apiCity
+    ? `https://api.vaksinasi.id/locations/${apiCity.province}?city=${apiCity.city}`
+    : null
+
+  const { response, ...rest } = useFetchJSON(url, { name: 'location' })
   const locations = useMemo(() => {
     if (response == null) return null
     if (isValidResponse(response)) {

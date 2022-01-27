@@ -1,16 +1,20 @@
+import { ApiSource } from '#/definition'
 import { Heading, Link, VStack, Text } from '@chakra-ui/react'
-import { apiToValue, valueToUrl } from 'Functions/regionValueNormalizer'
+import { useStoreContext } from 'Components/StoreContext'
 import { defaults } from 'lodash-es'
 import { useMemo } from 'react'
 import { Link as RouterLink, useLocation, useMatch } from 'react-router-dom'
-import type { City } from 'types/api'
+import type { UCity } from 'types/data'
 
 function DropdownItem(
   props: Parameters<typeof Link>[0] & {
-    city: City
+    city: UCity
     // shouldGiveFocusOnPageChange: boolean
   },
 ) {
+  const {
+    regions: [regions],
+  } = useStoreContext()
   const {
     city,
     // shouldGiveFocusOnPageChange,
@@ -19,12 +23,16 @@ function DropdownItem(
 
   // to generate url, we need to convert api value to display value
   // then from display value to url value
-  const displayValue = useMemo(() => apiToValue(city), [city])
-  const urlValue = useMemo(() => valueToUrl(displayValue), [displayValue])
+  // const displayValue = useMemo(() => apiToValue(city), [city])
+  const displayValue = city
+  const urlValue = useMemo(
+    () => regions?.toApi(displayValue, ApiSource.URL),
+    [displayValue],
+  )
   return (
     <Link
       as={RouterLink}
-      to={`/${urlValue.province}/${urlValue.city}`}
+      to={`/${urlValue?.province}/${urlValue?.city}`}
       sx={{
         '&:first-of-type :first-of-type': {
           borderTop: 'none',
@@ -56,8 +64,8 @@ function DropdownItem(
 
 export default function CityDropdown(
   props: Parameters<typeof VStack>[0] & {
-    data: City[]
-    onClickItem?: (city: City, e: React.MouseEvent) => void
+    data: UCity[]
+    onClickItem?: (city: UCity, e: React.MouseEvent) => void
   },
 ) {
   const { data, onClickItem, ...rest } = defaults(props, {

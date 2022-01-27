@@ -1,13 +1,15 @@
-import { useDataContext } from 'Components/DataContext'
 import { useMemo } from 'react'
 import { useParams } from 'react-router-dom'
-import { apiToValue, urlToValue, valueToApi } from './regionValueNormalizer'
 import hash from 'object-hash'
+import { useStoreContext } from 'Components/StoreContext'
+import { ApiSource } from '#/definition'
 
 type CityParam = { city: string; province: string } | null | false
 const cityParamCache = new Map<string, CityParam>()
 export function useCityParam() {
-  const { isCityValid, regions } = useDataContext()
+  const {
+    regions: [regions],
+  } = useStoreContext()
   const params = useParams()
   const { province, city } = params
 
@@ -19,8 +21,7 @@ export function useCityParam() {
     let result: CityParam
     if ((result = cityParamCache.get(hashed) ?? null)) return result
 
-    const validParameters = valueToApi(urlToValue({ province, city }))
-    result = isCityValid(validParameters) ? apiToValue(validParameters) : false
+    result = regions.toValidUnified({ province, city }, ApiSource.URL) ?? false
     cityParamCache.set(hashed, result)
     return result
   }, [params, regions])

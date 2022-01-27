@@ -3,16 +3,12 @@ import TheList from 'Components/pages/List/TheList'
 import ListSearchBar from 'Components/pages/List/SearchBar'
 import useFetchLocations from 'Functions/useFetchLocations'
 import { useLocation, useParams } from 'react-router-dom'
-import { useDataContext } from 'Components/DataContext'
 import { useEffect, useMemo, useState } from 'react'
-import { urlToValue, valueToApi } from 'Functions/regionValueNormalizer'
 import { useCityParam } from 'Functions/useValidParams'
 import hash from 'object-hash'
-import type { Locations } from 'types/api'
+import type { VidDetail } from 'types/data'
 import useSetRootBg from 'Functions/useSetRootBg'
-import { LocationListCache } from '#/cache'
 import useCache from 'Functions/useCache'
-import useScrollTracker from 'Functions/useScrollTracker'
 import { useStoreContext } from 'Components/StoreContext'
 import useSetInitialSearch from 'Functions/useSetInitialSearch'
 
@@ -20,13 +16,12 @@ export default function ListPage() {
   // const { regions } = useDataContext()
   const {
     locations: [locationsStore, setLocationsStore],
+    regions: [regions],
   } = useStoreContext()
   const { pathname } = useLocation()
   const city = useCityParam()
 
-  const { locations: l, startFetch } = useFetchLocations(
-    city ? valueToApi(city) : null,
-  )
+  const { locations: l, startFetch } = useFetchLocations(city ? city : null)
 
   // only fetch when locationsStore is null or
   // locationsStore.pathname is not current pathname

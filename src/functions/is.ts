@@ -1,4 +1,4 @@
-import * as s from 'superstruct'
+import s from 'superstruct'
 import type { AnyRegion } from 'types/data'
 
 const regionsStruct: s.Describe<AnyRegion[]> = s.array(

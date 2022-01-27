@@ -30,6 +30,7 @@ const config = {
     // "bundle": true,
   },
   packageOptions: {
+    knownEntrypoints: ['framer-motion-carousel', 'framesync']
     /* ... */
   },
   devOptions: {
