@@ -1,4 +1,10 @@
-import type { AnyRegion } from './data'
+// Any = Arbitrary
+/** Any arbitrary city object */
+export type AnyCity = { city: string; province: string }
+/** Any arbitrary region object */
+export type AnyRegion = Omit<AnyCity, 'city'> & {
+  city: string[]
+}
 
 export interface VidSuccessfulResponse<T> {
   data: T[]
@@ -41,4 +47,4 @@ export type RegionsResponse = VidEmptyResponse | VidFilledResponse<AnyRegion>
 export type LocationsResponse = VidEmptyResponse | ValidationError
 // | FilledResponse<Locations>
 
-export type FetchCode = 'region' | 'location'
+export type FetchCode = 'region' | 'location' | `location_${string}`

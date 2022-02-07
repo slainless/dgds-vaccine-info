@@ -1,17 +1,22 @@
-import type { LocationDetail, VidDetail } from 'types/data'
+import type { LocationDetail } from 'Functions/Location'
 import { Container, Heading, VStack, Text } from '@chakra-ui/react'
-import { useCityParam } from 'Functions/useValidParams'
+import { useCityParam } from 'Functions/useParam'
 import DataDisplay from './DataDisplay'
+import type { VidDetail } from '#/types/definition'
 
 export default function TheLocation(props: { data: LocationDetail | null }) {
   const { data: _, ...rest } = props
   // FIXME: need to check if detail is vaksinasi.id or kipi.covid.19.go.id
-  const data = props.data as VidDetail | null
+  const data = props.data
   const city = useCityParam()
   return (
     <Container layerStyle="constraint-sm">
       <Heading size="md" as="h1" ml={5}>
-        {data?.title}
+        {data?.isVidDetail()
+          ? data.title
+          : data?.isKipiDetail()
+          ? data.nama
+          : null}
       </Heading>
       <Text ml={5}>{city ? `${city.province}, ${city.city}` : null}</Text>
       <VStack
@@ -24,16 +29,16 @@ export default function TheLocation(props: { data: LocationDetail | null }) {
         border="1px solid"
         borderColor="gray.100"
       >
-        {data == null
-          ? null
-          : Object.entries(data)?.map(([key, value]) => (
+        {data?.isVidDetail()
+          ? Object.entries(data)?.map(([key, value]) => (
               <DataDisplay
                 key={key}
                 value={value}
-                k={key as keyof LocationDetail}
+                k={key as keyof VidDetail}
                 location={data}
               />
-            ))}
+            ))
+          : null}
       </VStack>
     </Container>
   )

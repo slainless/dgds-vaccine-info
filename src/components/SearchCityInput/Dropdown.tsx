@@ -1,10 +1,10 @@
-import { ApiSource } from '#/definition'
+import { ApiSource } from '#/types/definition'
 import { Heading, Link, VStack, Text } from '@chakra-ui/react'
 import { useStoreContext } from 'Components/StoreContext'
 import { defaults } from 'lodash-es'
 import { useMemo } from 'react'
 import { Link as RouterLink, useLocation, useMatch } from 'react-router-dom'
-import type { UCity } from 'types/data'
+import type { UCity } from '#/types/definition'
 
 function DropdownItem(
   props: Parameters<typeof Link>[0] & {
@@ -26,7 +26,7 @@ function DropdownItem(
   // const displayValue = useMemo(() => apiToValue(city), [city])
   const displayValue = city
   const urlValue = useMemo(
-    () => regions?.toApi(displayValue, ApiSource.URL),
+    () => regions?.toApi(displayValue, 'url'),
     [displayValue],
   )
   return (

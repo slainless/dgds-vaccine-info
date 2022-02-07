@@ -5,19 +5,18 @@ import {
   startCase,
   transform,
 } from 'lodash-es'
+import type { AnyRegion, AnyCity } from 'types/api'
 import type {
   UCity,
   URegion,
   UCityValue,
   UProvinceValue,
-  AnyRegion,
-  AnyCity,
-} from 'types/data'
-import { ApiSource } from '#/definition'
+} from '#/types/definition'
+import { ApiSource } from '#/types/definition'
 import TranslationTable from './Translation'
 
 type FixTable = Record<
-  ApiSource,
+  ApiSource | 'url',
   TranslationTable<string, UCityValue | UProvinceValue>
 >
 
@@ -34,7 +33,7 @@ const fixTable: FixTable = {
     ['YOGYAKARTA', 'DI Yogyakarta'],
     ['DKI JAKARTA', 'DKI Jakarta'],
   ]),
-  [ApiSource.URL]: new TranslationTable<string, UCityValue>([
+  url: new TranslationTable<string, UCityValue>([
     ['kab-tojo-una-una', 'Kab. Tojo Una-Una'],
     ['kab-toli-toli', 'Kab. Toli-Toli'],
     ['di-yogyakarta', 'DI Yogyakarta'],
@@ -73,7 +72,7 @@ export default class Indonesia {
   }
 
   // B (unified data) => A (api)
-  toApi(city: UCity, target: ApiSource): AnyCity {
+  toApi(city: UCity, target: ApiSource | 'url'): AnyCity {
     const table = fixTable[target]
     // translate from unified data to api
     const translated = mapValues(city, (v) => table.btoa(v) ?? v)
@@ -81,13 +80,12 @@ export default class Indonesia {
     if (target === ApiSource.KIPI_COVID_19_GO_ID)
       // if it's KIPI API, then transform the text to uppercase
       return mapValues(translated, (v) => v.toUpperCase())
-    else if (target === ApiSource.URL)
-      return mapValues(translated, (v) => kebabCase(v))
+    else if (target === 'url') return mapValues(translated, (v) => kebabCase(v))
     else return translated
   }
 
   // A (api) => B (unified data)
-  toUnified(city: AnyCity, source: ApiSource): AnyCity {
+  toUnified(city: AnyCity, source: ApiSource | 'url'): AnyCity {
     const table = fixTable[source]
     if (source === ApiSource.KIPI_COVID_19_GO_ID) {
       // transform only untranslated value
@@ -99,14 +97,15 @@ export default class Indonesia {
       )
     } else if (source === ApiSource.VAKSINASI_ID)
       return mapValues(city, (v) => table.atob(v) ?? v)
-    else
+    else if (source === 'url')
       return mapValues(
         city,
         (v) => table.atob(v) ?? startCase(v).replace(/^Kab /, 'Kab. '),
       )
+    throw new Error('Source not allowed.')
   }
 
-  toValidUnified(city: AnyCity, source: ApiSource) {
+  toValidUnified(city: AnyCity, source: ApiSource | 'url') {
     const unified = this.toUnified(city, source)
     return (
       this.cities.find(

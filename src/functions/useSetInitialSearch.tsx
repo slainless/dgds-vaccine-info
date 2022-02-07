@@ -1,6 +1,6 @@
 import { useStoreContext } from 'Components/StoreContext'
 import { useEffect } from 'react'
-import { useCityParam } from './useValidParams'
+import { useCityParam } from './useParam'
 
 export default function useSetInitialSearch() {
   const {

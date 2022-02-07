@@ -1,4 +1,5 @@
-import type Regions from './regions'
+import type Regions from 'types/regions'
+export type { AnyCity, AnyRegion } from 'types/api'
 
 // U = Universal
 export type UProvinceValue = typeof Regions[number]['province'] | (string & {})
@@ -12,15 +13,8 @@ export type URegion = Omit<UCity, 'city'> & {
   city: UCityValue[]
 }
 
-// Any = Arbitrary
-/** Any arbitrary city object */
-export type AnyCity = { city: string; province: string }
-/** Any arbitrary region object */
-export type AnyRegion = Omit<AnyCity, 'city'> & {
-  city: string[]
-}
+export const DetailMeta = Symbol('detail-meta')
 
-export type LocationDetail = KipiDetail | VidDetail
 export type KipiDetail = {
   id: number
   kode: string
@@ -30,7 +24,7 @@ export type KipiDetail = {
   alamat: string
   latitude: string
   longitude: string
-  telp: string
+  telp: string | null
   jenis_faskes: string
   kelas_rs: string
   status: string
@@ -50,7 +44,9 @@ export type KipiDetail = {
     tanggal: string
   }>
   source_data: string
+  [DetailMeta]: ApiSource.KIPI_COVID_19_GO_ID
 }
+
 export type VidDetail = {
   province: UProvinceValue
   city: UCityValue
@@ -74,4 +70,10 @@ export type VidDetail = {
   isvalid: boolean
   code: string
   dateadded: string
+  [DetailMeta]: ApiSource.VAKSINASI_ID
+}
+
+export const enum ApiSource {
+  VAKSINASI_ID = 'vaksinasi.id',
+  KIPI_COVID_19_GO_ID = 'kipi.covid19.go.id',
 }

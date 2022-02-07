@@ -4,7 +4,7 @@ import './index.css'
 import { HashRouter, Routes, Route, Outlet } from 'react-router-dom'
 import HomePage from './pages/Home'
 import ListPage from './pages/List'
-import DetailPage from './pages/Detail'
+import LocationPage from './pages/Location'
 
 ReactDOM.render(
   <React.StrictMode>
@@ -12,10 +12,7 @@ ReactDOM.render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route index element={<HomePage />} />
-          <Route path=":province/:city">
-            <Route index element={<ListPage />} />
-            <Route path=":locationHash" element={<DetailPage />} />
-          </Route>
+          <Route path=":province/:city/*" element={<LocationPage />} />
         </Route>
       </Routes>
     </HashRouter>

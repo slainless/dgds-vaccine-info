@@ -14,6 +14,8 @@ import {
   MdOutlinePhonelink,
   MdTapAndPlay,
   MdLocalHospital,
+  MdOutlineLocalPhone,
+  MdOutlineContactPhone,
 } from 'react-icons/md'
 import { HiOutlineStatusOnline } from 'react-icons/hi'
 
@@ -78,6 +80,13 @@ export default function regMethodNormalizer(
       display: detailed ? str : RegistrationMethod.ONLINE,
       color: 'pink',
       icon: MdOutlinePhonelink,
+    }
+
+  if (/hubungi.*telepon/gi.test(str))
+    return {
+      display: detailed ? str : 'Telepon',
+      color: 'teal',
+      icon: MdOutlineContactPhone,
     }
 
   return otherMethodNormalizer(str, detailed)
