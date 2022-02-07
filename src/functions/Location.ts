@@ -73,6 +73,5 @@ export function assertKipiDetail(
   //     'Data from kipi.covid19.go.id is conflicting with current schema!',
   //   )
   // }
-  console.log(input.data)
   assert(input.data, array(locationStruct[ApiSource.KIPI_COVID_19_GO_ID]))
 }

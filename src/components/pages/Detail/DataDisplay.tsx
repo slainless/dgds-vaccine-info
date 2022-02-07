@@ -11,7 +11,8 @@ import regMethodNormalizer from 'Functions/regMethodNormalizer'
 import { DateTime } from 'luxon'
 import { MdAccessTimeFilled, MdEventAvailable } from 'react-icons/md'
 import { RiExternalLinkFill, RiTeamFill } from 'react-icons/ri'
-import type { LocationDetail, VidDetail } from 'types/data'
+import type { VidDetail } from '#/types/definition'
+import type { LocationDetail } from 'Functions/Location'
 
 const Wrapper = (props: Parameters<typeof VStack>[0]) => (
   <Flex

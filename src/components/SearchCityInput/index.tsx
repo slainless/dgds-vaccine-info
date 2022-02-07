@@ -19,7 +19,7 @@ import {
   useState,
 } from 'react'
 import { RiCloseLine, RiSearchLine } from 'react-icons/ri'
-import type { UCity } from 'types/data'
+import type { UCity } from '#/types/definition'
 import CityDropdown from './Dropdown'
 import type Fuse from 'fuse.js'
 import useHasFocusWithin from 'Functions/useHasFocusWithin'

@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
-import isValidResponse from './isValidResponse'
-import isValidRegions from './isValidRegions'
 import useFetchJSON from 'Functions/useFetchJSON'
+import { assertRegion } from './Region'
 
 export function useFetchRegions() {
   const { response, ...rest } = useFetchJSON(
@@ -10,12 +9,7 @@ export function useFetchRegions() {
   )
   const regions = useMemo(() => {
     if (response == null) return null
-    if (isValidResponse(response)) {
-    } else throw new Error('Oops! Looks like there are some error on API side!')
-
-    if (isValidRegions(response.data)) {
-    } else
-      throw new Error('Data of regions received is different from the schema')
+    assertRegion(response)
 
     return response.data
   }, [response])

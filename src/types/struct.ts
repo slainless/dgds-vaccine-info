@@ -6,12 +6,10 @@ import type {
 import { ApiSource, KipiDetail, VidDetail, DetailMeta } from './definition'
 import * as s from 'superstruct'
 
-export const regionsStruct: s.Describe<AnyRegion[]> = s.array(
-  s.object({
-    province: s.string(),
-    city: s.array(s.string()),
-  }),
-)
+export const regionsStruct: s.Describe<AnyRegion> = s.object({
+  province: s.string(),
+  city: s.array(s.string()),
+})
 
 export const successfulResponseStruct: {
   [ApiSource.VAKSINASI_ID]: s.Describe<VidSuccessfulResponse<any>>
