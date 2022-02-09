@@ -1,9 +1,0 @@
-{
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "prettier.semi": false,
-  "javascript.format.semicolons": "remove",
-  "typescript.format.semicolons": "remove",
-  "autoimport.semicolon": false,
-  "liveServer.settings.root": "/build"
-}
