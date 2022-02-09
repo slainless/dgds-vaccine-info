@@ -10,7 +10,7 @@ export default function TheLocation(props: { data: LocationDetail | null }) {
   const data = props.data
   const city = useCityParam()
   return (
-    <Container layerStyle="constraint-sm">
+    <Container layerStyle="constraint-sm" pb={16}>
       <Heading size="md" as="h1" ml={5}>
         {data?.isVidDetail()
           ? data.title
