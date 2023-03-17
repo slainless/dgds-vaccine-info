@@ -12,6 +12,7 @@ export class LocationDetail {
   [DetailMeta]: ApiSource
   constructor(input: VidDetail | KipiDetail) {
     Object.assign(this, input)
+    this[DetailMeta] = input[DetailMeta]
   }
 
   isVidDetail(): this is VidDetail {

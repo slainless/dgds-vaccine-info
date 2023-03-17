@@ -12,6 +12,10 @@
   "homepage": "https://slainless.github.io/dgds-vaccine-info",
   "dependencies": {
     "@chakra-ui/react": "^1.7.2",
+    "@chakra-ui/theme": ">=1.0.0",
+    "@chakra-ui/anatomy": ">=1.0.0",
+    "@chakra-ui/system": ">=1.0.0",
+    "@chakra-ui/theme-tools": ">=1.0.0",
     "@emotion/react": "^11.6.0",
     "@emotion/styled": "^11.6.0",
     "framer-motion": "^5.3.0",
@@ -27,6 +31,7 @@
     "react-helmet": "^6.1.0",
     "react-icons": "^4.3.1",
     "react-merge-refs": "^1.1.0",
+    "react-router": "6",
     "react-router-dom": "6",
     "superstruct": "^0.15.3"
   },

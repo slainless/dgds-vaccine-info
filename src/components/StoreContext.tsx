@@ -1,5 +1,4 @@
 import contextFactory from 'Functions/contextFactory'
-import type { Location } from 'history'
 import type { UCity, VidDetail } from '#/types/definition'
 import type { LocationDetail } from 'Functions/Location'
 import type Fuse from 'fuse.js'
