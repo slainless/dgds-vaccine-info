@@ -1,25 +1,24 @@
-# New Project
+Once upon a time, a simple site was created to be a place to seek for vaccination info. 
+The site was dedicated for `ＤＩＧＩＤＥＳ`. However, it lacking in many areas. 
+To the present, it only contains vaccination location info.
 
-> ✨ Bootstrapped with Create Snowpack App (CSA).
+## Tech Stack
 
-## Available Scripts
+- Snowpack, v3
+- Chakra UI, v1
 
-### npm start
+Built as a single-page application, using `Snowpack` (which is unmaintained anymore).
 
-Runs the app in the development mode.
-Open http://localhost:8080 to view it in the browser.
+Heavily dependent on context to pass state. At the time of the development, i'm unaware of jotai and zustand.
 
-The page will reload if you make edits.
-You will also see any lint errors in the console.
+HTTP request mechanic only relying on built-in `fetch`.
 
-### npm run build
+Data validation using `superstruct`. There was a plan to switch to `class-validator` but my internship is over, so further development is ceased.
 
-Builds a static copy of your site to the `build/` folder.
-Your app is ready to be deployed!
+## State
 
-**For the best production performance:** Add a build bundler plugin like "@snowpack/plugin-webpack" to your `snowpack.config.mjs` config file.
+Only 2 features implemented: location list and location detail.
 
-### npm test
+The implementation is honestly too crude and naive, mainly in how the data is described and handled. The data being fed to the UI is too concrete, making the effort in building the UI increasing exponentially. The UI should only being fed with an abstract interface, not knowing the true underlying structure of the data.
 
-Launches the application test runner.
-Run with the `--watch` flag (`npm test -- --watch`) to run in interactive watch mode.
+But it is a good lesson nonetheless.
